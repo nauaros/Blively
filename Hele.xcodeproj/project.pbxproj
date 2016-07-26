@@ -1,0 +1,687 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C91043E01D32A9760094B15B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C91043DF1D32A9760094B15B /* main.m */; };
+		C91043E31D32A9760094B15B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C91043E21D32A9760094B15B /* AppDelegate.m */; };
+		C91043EC1D32A9760094B15B /* Hele.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C91043EA1D32A9760094B15B /* Hele.xcdatamodeld */; };
+		C91043EE1D32A9760094B15B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C91043ED1D32A9760094B15B /* Assets.xcassets */; };
+		C91043F11D32A9760094B15B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C91043EF1D32A9760094B15B /* LaunchScreen.storyboard */; };
+		C91043FC1D32A9760094B15B /* HeleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C91043FB1D32A9760094B15B /* HeleTests.m */; };
+		C91044071D32A9760094B15B /* HeleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044061D32A9760094B15B /* HeleUITests.m */; };
+		C91044161D32AA290094B15B /* BLExploreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044151D32AA290094B15B /* BLExploreViewController.m */; };
+		C91044191D32AA6A0094B15B /* BLAdventuresViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */; };
+		C910441C1D32AAAF0094B15B /* BLPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C910441B1D32AAAF0094B15B /* BLPhotoCell.m */; };
+		C91044261D32ABE90094B15B /* BLPinMO+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = C910441F1D32ABE90094B15B /* BLPinMO+CoreDataProperties.m */; };
+		C91044271D32ABE90094B15B /* BLPinMO.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044211D32ABE90094B15B /* BLPinMO.m */; };
+		C91044281D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044231D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m */; };
+		C91044291D32ABE90094B15B /* BLAdventureMO.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044251D32ABE90094B15B /* BLAdventureMO.m */; };
+		C910442B1D32AC5B0094B15B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C910442A1D32AC5B0094B15B /* Main.storyboard */; };
+		C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C910442D1D32B0100094B15B /* BLPathViewController.m */; };
+		C93E24031D3D5F97006A2848 /* BLLocationSearchTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */; };
+		DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C91043F81D32A9760094B15B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C91043D31D32A9750094B15B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C91043DA1D32A9760094B15B;
+			remoteInfo = Hele;
+		};
+		C91044031D32A9760094B15B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C91043D31D32A9750094B15B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C91043DA1D32A9760094B15B;
+			remoteInfo = Hele;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hele.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		107A3ED01F242A12D21A9FF1 /* Pods-Hele.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hele.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hele/Pods-Hele.debug.xcconfig"; sourceTree = "<group>"; };
+		AD053ADCA484AABE1AE4269A /* Pods-Hele.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hele.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hele/Pods-Hele.release.xcconfig"; sourceTree = "<group>"; };
+		C91043DB1D32A9760094B15B /* Hele.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hele.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C91043DF1D32A9760094B15B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C91043E11D32A9760094B15B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C91043E21D32A9760094B15B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C91043EB1D32A9760094B15B /* Hele.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Hele.xcdatamodel; sourceTree = "<group>"; };
+		C91043ED1D32A9760094B15B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C91043F01D32A9760094B15B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C91043F21D32A9760094B15B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C91043F71D32A9760094B15B /* HeleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C91043FB1D32A9760094B15B /* HeleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeleTests.m; sourceTree = "<group>"; };
+		C91043FD1D32A9760094B15B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C91044021D32A9760094B15B /* HeleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C91044061D32A9760094B15B /* HeleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeleUITests.m; sourceTree = "<group>"; };
+		C91044081D32A9760094B15B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C91044141D32AA290094B15B /* BLExploreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLExploreViewController.h; sourceTree = "<group>"; };
+		C91044151D32AA290094B15B /* BLExploreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLExploreViewController.m; sourceTree = "<group>"; };
+		C91044171D32AA6A0094B15B /* BLAdventuresViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAdventuresViewController.h; sourceTree = "<group>"; };
+		C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventuresViewController.m; sourceTree = "<group>"; };
+		C910441A1D32AAAF0094B15B /* BLPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPhotoCell.h; sourceTree = "<group>"; };
+		C910441B1D32AAAF0094B15B /* BLPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPhotoCell.m; sourceTree = "<group>"; };
+		C910441E1D32ABE90094B15B /* BLPinMO+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLPinMO+CoreDataProperties.h"; sourceTree = "<group>"; };
+		C910441F1D32ABE90094B15B /* BLPinMO+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLPinMO+CoreDataProperties.m"; sourceTree = "<group>"; };
+		C91044201D32ABE90094B15B /* BLPinMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPinMO.h; sourceTree = "<group>"; };
+		C91044211D32ABE90094B15B /* BLPinMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPinMO.m; sourceTree = "<group>"; };
+		C91044221D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLAdventureMO+CoreDataProperties.h"; sourceTree = "<group>"; };
+		C91044231D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLAdventureMO+CoreDataProperties.m"; sourceTree = "<group>"; };
+		C91044241D32ABE90094B15B /* BLAdventureMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAdventureMO.h; sourceTree = "<group>"; };
+		C91044251D32ABE90094B15B /* BLAdventureMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureMO.m; sourceTree = "<group>"; };
+		C910442A1D32AC5B0094B15B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C910442C1D32B0100094B15B /* BLPathViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPathViewController.h; sourceTree = "<group>"; };
+		C910442D1D32B0100094B15B /* BLPathViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPathViewController.m; sourceTree = "<group>"; };
+		C93E24011D3D5F97006A2848 /* BLLocationSearchTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLocationSearchTable.h; sourceTree = "<group>"; };
+		C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLocationSearchTable.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C91043D81D32A9760094B15B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C91043F41D32A9760094B15B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C91043FF1D32A9760094B15B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		424D74838E56C240DEBDE821 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				107A3ED01F242A12D21A9FF1 /* Pods-Hele.debug.xcconfig */,
+				AD053ADCA484AABE1AE4269A /* Pods-Hele.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9A3425F4808B08A2C2AEB538 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C91043D21D32A9750094B15B = {
+			isa = PBXGroup;
+			children = (
+				C91043DD1D32A9760094B15B /* Hele */,
+				C91043FA1D32A9760094B15B /* HeleTests */,
+				C91044051D32A9760094B15B /* HeleUITests */,
+				C91043DC1D32A9760094B15B /* Products */,
+				424D74838E56C240DEBDE821 /* Pods */,
+				9A3425F4808B08A2C2AEB538 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		C91043DC1D32A9760094B15B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C91043DB1D32A9760094B15B /* Hele.app */,
+				C91043F71D32A9760094B15B /* HeleTests.xctest */,
+				C91044021D32A9760094B15B /* HeleUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C91043DD1D32A9760094B15B /* Hele */ = {
+			isa = PBXGroup;
+			children = (
+				C91043E11D32A9760094B15B /* AppDelegate.h */,
+				C91043E21D32A9760094B15B /* AppDelegate.m */,
+				C99AE9801D41596C000F573F /* Explore Screen */,
+				C91044171D32AA6A0094B15B /* BLAdventuresViewController.h */,
+				C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */,
+				C910442C1D32B0100094B15B /* BLPathViewController.h */,
+				C910442D1D32B0100094B15B /* BLPathViewController.m */,
+				C910442A1D32AC5B0094B15B /* Main.storyboard */,
+				C91043ED1D32A9760094B15B /* Assets.xcassets */,
+				C91043F21D32A9760094B15B /* Info.plist */,
+				C91043EF1D32A9760094B15B /* LaunchScreen.storyboard */,
+				C910441D1D32AACF0094B15B /* Model */,
+				C91043DE1D32A9760094B15B /* Supporting Files */,
+			);
+			path = Hele;
+			sourceTree = "<group>";
+		};
+		C91043DE1D32A9760094B15B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C91043DF1D32A9760094B15B /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C91043FA1D32A9760094B15B /* HeleTests */ = {
+			isa = PBXGroup;
+			children = (
+				C91043FB1D32A9760094B15B /* HeleTests.m */,
+				C91043FD1D32A9760094B15B /* Info.plist */,
+			);
+			path = HeleTests;
+			sourceTree = "<group>";
+		};
+		C91044051D32A9760094B15B /* HeleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C91044061D32A9760094B15B /* HeleUITests.m */,
+				C91044081D32A9760094B15B /* Info.plist */,
+			);
+			path = HeleUITests;
+			sourceTree = "<group>";
+		};
+		C910441D1D32AACF0094B15B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C91043EA1D32A9760094B15B /* Hele.xcdatamodeld */,
+				C91044221D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.h */,
+				C91044231D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m */,
+				C91044241D32ABE90094B15B /* BLAdventureMO.h */,
+				C91044251D32ABE90094B15B /* BLAdventureMO.m */,
+				C910441E1D32ABE90094B15B /* BLPinMO+CoreDataProperties.h */,
+				C910441F1D32ABE90094B15B /* BLPinMO+CoreDataProperties.m */,
+				C91044201D32ABE90094B15B /* BLPinMO.h */,
+				C91044211D32ABE90094B15B /* BLPinMO.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		C99AE9801D41596C000F573F /* Explore Screen */ = {
+			isa = PBXGroup;
+			children = (
+				C91044141D32AA290094B15B /* BLExploreViewController.h */,
+				C91044151D32AA290094B15B /* BLExploreViewController.m */,
+				C93E24011D3D5F97006A2848 /* BLLocationSearchTable.h */,
+				C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */,
+				C910441A1D32AAAF0094B15B /* BLPhotoCell.h */,
+				C910441B1D32AAAF0094B15B /* BLPhotoCell.m */,
+			);
+			name = "Explore Screen";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C91043DA1D32A9760094B15B /* Hele */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C910440B1D32A9760094B15B /* Build configuration list for PBXNativeTarget "Hele" */;
+			buildPhases = (
+				9CA77DBF08E13A21C67260A6 /* [CP] Check Pods Manifest.lock */,
+				C91043D71D32A9760094B15B /* Sources */,
+				C91043D81D32A9760094B15B /* Frameworks */,
+				C91043D91D32A9760094B15B /* Resources */,
+				36462FCEB2A8183593CF7EFF /* [CP] Embed Pods Frameworks */,
+				412427162F15A27002353E06 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hele;
+			productName = Hele;
+			productReference = C91043DB1D32A9760094B15B /* Hele.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C91043F61D32A9760094B15B /* HeleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C910440E1D32A9760094B15B /* Build configuration list for PBXNativeTarget "HeleTests" */;
+			buildPhases = (
+				C91043F31D32A9760094B15B /* Sources */,
+				C91043F41D32A9760094B15B /* Frameworks */,
+				C91043F51D32A9760094B15B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C91043F91D32A9760094B15B /* PBXTargetDependency */,
+			);
+			name = HeleTests;
+			productName = HeleTests;
+			productReference = C91043F71D32A9760094B15B /* HeleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C91044011D32A9760094B15B /* HeleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C91044111D32A9760094B15B /* Build configuration list for PBXNativeTarget "HeleUITests" */;
+			buildPhases = (
+				C91043FE1D32A9760094B15B /* Sources */,
+				C91043FF1D32A9760094B15B /* Frameworks */,
+				C91044001D32A9760094B15B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C91044041D32A9760094B15B /* PBXTargetDependency */,
+			);
+			name = HeleUITests;
+			productName = HeleUITests;
+			productReference = C91044021D32A9760094B15B /* HeleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C91043D31D32A9750094B15B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Naufal Aros";
+				TargetAttributes = {
+					C91043DA1D32A9760094B15B = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = UX6C44FPTA;
+					};
+					C91043F61D32A9760094B15B = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = UX6C44FPTA;
+						TestTargetID = C91043DA1D32A9760094B15B;
+					};
+					C91044011D32A9760094B15B = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = UX6C44FPTA;
+						TestTargetID = C91043DA1D32A9760094B15B;
+					};
+				};
+			};
+			buildConfigurationList = C91043D61D32A9750094B15B /* Build configuration list for PBXProject "Hele" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C91043D21D32A9750094B15B;
+			productRefGroup = C91043DC1D32A9760094B15B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C91043DA1D32A9760094B15B /* Hele */,
+				C91043F61D32A9760094B15B /* HeleTests */,
+				C91044011D32A9760094B15B /* HeleUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C91043D91D32A9760094B15B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C910442B1D32AC5B0094B15B /* Main.storyboard in Resources */,
+				C91043F11D32A9760094B15B /* LaunchScreen.storyboard in Resources */,
+				C91043EE1D32A9760094B15B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C91043F51D32A9760094B15B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C91044001D32A9760094B15B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		36462FCEB2A8183593CF7EFF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hele/Pods-Hele-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		412427162F15A27002353E06 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hele/Pods-Hele-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9CA77DBF08E13A21C67260A6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C91043D71D32A9760094B15B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C91044291D32ABE90094B15B /* BLAdventureMO.m in Sources */,
+				C91044161D32AA290094B15B /* BLExploreViewController.m in Sources */,
+				C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */,
+				C93E24031D3D5F97006A2848 /* BLLocationSearchTable.m in Sources */,
+				C91043E31D32A9760094B15B /* AppDelegate.m in Sources */,
+				C91043E01D32A9760094B15B /* main.m in Sources */,
+				C91043EC1D32A9760094B15B /* Hele.xcdatamodeld in Sources */,
+				C91044191D32AA6A0094B15B /* BLAdventuresViewController.m in Sources */,
+				C91044271D32ABE90094B15B /* BLPinMO.m in Sources */,
+				C91044261D32ABE90094B15B /* BLPinMO+CoreDataProperties.m in Sources */,
+				C910441C1D32AAAF0094B15B /* BLPhotoCell.m in Sources */,
+				C91044281D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C91043F31D32A9760094B15B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C91043FC1D32A9760094B15B /* HeleTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C91043FE1D32A9760094B15B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C91044071D32A9760094B15B /* HeleUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C91043F91D32A9760094B15B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C91043DA1D32A9760094B15B /* Hele */;
+			targetProxy = C91043F81D32A9760094B15B /* PBXContainerItemProxy */;
+		};
+		C91044041D32A9760094B15B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C91043DA1D32A9760094B15B /* Hele */;
+			targetProxy = C91044031D32A9760094B15B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C91043EF1D32A9760094B15B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C91043F01D32A9760094B15B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C91044091D32A9760094B15B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C910440A1D32A9760094B15B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C910440C1D32A9760094B15B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 107A3ED01F242A12D21A9FF1 /* Pods-Hele.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = Hele/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C910440D1D32A9760094B15B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AD053ADCA484AABE1AE4269A /* Pods-Hele.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = Hele/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		C910440F1D32A9760094B15B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = HeleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.HeleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hele.app/Hele";
+			};
+			name = Debug;
+		};
+		C91044101D32A9760094B15B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = HeleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.HeleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hele.app/Hele";
+			};
+			name = Release;
+		};
+		C91044121D32A9760094B15B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = HeleUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.HeleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Hele;
+			};
+			name = Debug;
+		};
+		C91044131D32A9760094B15B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = HeleUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.HeleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Hele;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C91043D61D32A9750094B15B /* Build configuration list for PBXProject "Hele" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C91044091D32A9760094B15B /* Debug */,
+				C910440A1D32A9760094B15B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C910440B1D32A9760094B15B /* Build configuration list for PBXNativeTarget "Hele" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C910440C1D32A9760094B15B /* Debug */,
+				C910440D1D32A9760094B15B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C910440E1D32A9760094B15B /* Build configuration list for PBXNativeTarget "HeleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C910440F1D32A9760094B15B /* Debug */,
+				C91044101D32A9760094B15B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C91044111D32A9760094B15B /* Build configuration list for PBXNativeTarget "HeleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C91044121D32A9760094B15B /* Debug */,
+				C91044131D32A9760094B15B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C91043EA1D32A9760094B15B /* Hele.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C91043EB1D32A9760094B15B /* Hele.xcdatamodel */,
+			);
+			currentVersion = C91043EB1D32A9760094B15B /* Hele.xcdatamodel */;
+			path = Hele.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = C91043D31D32A9750094B15B /* Project object */;
+}

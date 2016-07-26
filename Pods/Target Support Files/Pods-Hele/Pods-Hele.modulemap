@@ -1,0 +1,6 @@
+framework module Pods_Hele {
+  umbrella header "Pods-Hele-umbrella.h"
+
+  export *
+  module * { export * }
+}
