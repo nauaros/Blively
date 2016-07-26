@@ -142,7 +142,9 @@
             return;
         }
         
-        self.matchingItems = [NSArray arrayWithArray: response.mapItems];
+        NSPredicate *noBusiness = [NSPredicate predicateWithFormat:@"business.uID == 0"];
+        NSArray *locations = [NSArray arrayWithArray: response.mapItems];
+        self.matchingItems = [locations filteredArrayUsingPredicate: noBusiness];
         [self.tableView reloadData];
     }];
 }
