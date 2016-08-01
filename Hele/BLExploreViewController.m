@@ -30,30 +30,30 @@ enum flickrPhotoSize {
     flickrPhotoSizeLarge1600
 };
 
+
 // pragma mark - Constants
 static NSString *const apiKey = @"5cb909f40a9a88ecc2c97b0dfe7e09e5";
 NSString *kCellID = @"photoCell";       // UICollecionViewCell storyboard id
 BOOL firstTimeRequest = YES;
 
-@interface BLExploreViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MGLMapViewDelegate, CLLocationManagerDelegate, HandleMapSearch>
+@interface BLExploreViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate, HandleMapSearch>
 
 @property (nonatomic, strong) NSURLSession *session;
 @property (nonatomic, strong) NSURLSessionDownloadTask *task;
 
-@property (nonatomic, strong) NSMutableArray *photoIDs;
-@property (nonatomic, strong) NSMutableArray *photoURLs;
-@property (nonatomic, strong) NSMutableArray *photoLocations;
+@property (nonatomic, strong) NSMutableArray<NSDictionary *> *photoIDs;
+@property (nonatomic, strong) NSMutableArray<NSURL *> *photoURLs;
+@property (nonatomic, strong) NSMutableArray<CLLocation *> *photoLocations;
 @property (nonatomic, strong) NSCache *cache;
 @property (nonatomic, assign) int numberOfPhotos;
 
 // pragma mark - IBOutlets
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (strong, nonatomic) IBOutlet MGLMapView *mapView;
 
 //
-@property (nonatomic, strong) NSMutableOrderedSet *photoLocationsForAdv;
-@property (nonatomic, strong) NSMutableOrderedSet *photoURLsForAdv;
+@property (nonatomic, strong) NSMutableOrderedSet<CLLocation *> *photoLocationsForAdv;
+@property (nonatomic, strong) NSMutableOrderedSet<NSURL *> *photoURLsForAdv;
 @property (nonatomic, strong) NSMutableDictionary *pinPoints;
 
 @property (nonatomic, strong) UISearchController *resultSearchController;
@@ -73,47 +73,12 @@ BOOL firstTimeRequest = YES;
     _cache = [[NSCache alloc] init];
     _numberOfPhotos = INCR;
     
-    CLLocationDegrees lat = 43.6525;
-    CLLocationDegrees lon = -79.381667;
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+    // Configuring UINavigationItem.
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Explore" style:UIBarButtonItemStylePlain target:self action:@selector(exploreButtonClicked)];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonClicked)];
+    self.navigationItem.title = @"Discover";
     
-    
-    [self photosAroundLocation:location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
-        [_collectionView reloadData];
-    }];
-
-    MGLPointAnnotation *point = [[MGLPointAnnotation alloc] init];
-    point.coordinate = CLLocationCoordinate2DMake(43.6525, -79.381667);
-    point.title = @"Toronto";
-    point.subtitle = @"David Bay Street, Ontario.";
-    
-    [self.mapView addAnnotation:point];
-    
-    [_mapView setCenterCoordinate:location.coordinate zoomLevel:8 animated:NO];
-    
-    // Setting UISearchController
-    BLLocationSearchTable *locationSearchTable = [self.storyboard instantiateViewControllerWithIdentifier:@"LocationSearchTable"];
-    locationSearchTable.mapView = self.mapView;
-    locationSearchTable.handleMapSearchDelegate = self;
-    _resultSearchController = [[UISearchController alloc] initWithSearchResultsController:locationSearchTable];
-    _resultSearchController.searchResultsUpdater = locationSearchTable;
-    
-    
-    // Configuring UISearchBar in the UINavigationItem
-    UISearchBar *searchBar = _resultSearchController.searchBar;
-    [searchBar sizeToFit];
-    searchBar.placeholder = @"Search for cities";
-    self.navigationItem.titleView = _resultSearchController.searchBar;
-    
-    _resultSearchController.hidesNavigationBarDuringPresentation = NO;
-    _resultSearchController.dimsBackgroundDuringPresentation = YES;
-    self.definesPresentationContext = YES;
-    
-    // Configuring UICollectionView
-    /*UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.tintColor = [UIColor grayColor];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    [self.collectionView addSubview:refreshControl];*/
 }
 
 #pragma mark - Networking Methods
@@ -217,12 +182,10 @@ BOOL firstTimeRequest = YES;
                     NSArray *photoArray = [[photosJSON objectForKey:@"photos"] objectForKey:@"photo"];
                     
                     if (firstTimeRequest) {
-                        NSLog(@"Primera vez");
                         for (NSDictionary *photo in photoArray) {
                             [self.photoIDs addObject:photo];
                         }
                     } else {
-                        NSLog(@"Segunda vez");
                         for (int i = self.numberOfPhotos - INCR; i < photoArray.count; i++) {
                             [self.photoIDs addObject:photoArray[i]];
                         }
@@ -401,9 +364,9 @@ BOOL firstTimeRequest = YES;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.item >= self.numberOfPhotos/2) {
-        NSLog(@"Estamos en el final.");
         [self loadMorePhotos];
     }
+    
     BLPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
     cell.photo.image = [UIImage imageNamed:@"placeholder"];
     
@@ -445,15 +408,18 @@ BOOL firstTimeRequest = YES;
 
 - (void)loadMorePhotos {
     self.numberOfPhotos += INCR;
-    //[self.photoIDs removeAllObjects];
-    //[self.photoURLs removeAllObjects];
-    //[self.photoLocations removeAllObjects];
-    NSLog(@"LONGITUDE %lu", (unsigned long)self.photoIDs.count);
+    
     CLLocation *location = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
     [self photosAroundLocation:location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
         [_collectionView reloadData];
-        NSLog(@"LONGITUDE %lu", (unsigned long)self.photoIDs.count);
     }];
+}
+
+/*!
+ @brief Current location of user.
+ */
+- (CLLocation *)userLocation {
+    return self.mapView.userLocation.location;
 }
 
 #pragma mark - UICollectionViewDelegate Methods
@@ -473,7 +439,6 @@ BOOL firstTimeRequest = YES;
     if (![self.photoLocationsForAdv containsObject:self.photoLocations[indexPath.item]] && ![self.photoURLsForAdv containsObject:self.photoURLs[indexPath.item]]) {
         
         CLLocation *location = self.photoLocations[indexPath.item];
-        // FIXME: Convert to struct {CLLLocation location; NSURL urlPhoto}
         [self.photoLocationsForAdv addObject:location];
         [self.photoURLsForAdv addObject:self.photoURLs[indexPath.item]];
         
@@ -491,6 +456,13 @@ BOOL firstTimeRequest = YES;
         MGLPointAnnotation *pin = [self.pinPoints objectForKey:@(indexPath.item)];
         [self.pinPoints removeObjectForKey:@(indexPath.item)];
         [self.mapView removeAnnotation:pin];
+    }
+    
+    // show/hire rightBarButton.
+    if (self.photoLocationsForAdv.count >= 4) {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    } else {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
     
@@ -513,42 +485,6 @@ BOOL firstTimeRequest = YES;
     return context;
 }
 
-- (IBAction)explore:(id)sender
-{
-    if (self.photoLocationsForAdv.count > 0) {
-        
-        BLAdventureMO *adventure = [NSEntityDescription insertNewObjectForEntityForName:@"Adventure" inManagedObjectContext:[self managedObjectContext]];
-        adventure.date = [NSDate date];
-        if ([self.textField.text isEqualToString:@""]) {
-            adventure.name = @"Cheers";
-        } else {
-            adventure.name = self.textField.text;
-        }
-        
-        NSMutableOrderedSet *set = [[NSMutableOrderedSet alloc] init];
-        
-        // FIXME: Use sctruct instead of two arrays
-        for (NSUInteger i = 0; i < self.photoLocationsForAdv.count; i++) {
-            BLPinMO *pin = [NSEntityDescription insertNewObjectForEntityForName:@"Pin" inManagedObjectContext:[self managedObjectContext]];
-            
-            CLLocation *location = [self.photoLocationsForAdv objectAtIndex:i];
-            NSURL *url = [self.photoURLsForAdv objectAtIndex:i];
-            
-            pin.latitude = [NSNumber numberWithFloat:location.coordinate.latitude];
-            pin.longitude = [NSNumber numberWithFloat:location.coordinate.longitude];
-            pin.imageURL = url.absoluteString;
-            
-            [set addObject:pin];
-        }
-        
-        adventure.pins = [set copy];
-        
-        [self saveContext];
-        
-    }
-    
-}
-
 /*!
  Save current context. Core Data
  */
@@ -562,14 +498,29 @@ BOOL firstTimeRequest = YES;
     }
 }
 
-#pragma mark - MGLMapViewDelegate methods
+#pragma mark - MGLMapViewDelegate Methods
 
 - (BOOL)mapView:(MGLMapView *)mapView annotationCanShowCallout:(id<MGLAnnotation>)annotation {
     // Always try to show a callout when an annotation is tapped.
     return YES;
 }
 
-#pragma mark - HandleMapSearch protocol methods
+- (void)mapView:(MGLMapView *)mapView didUpdateUserLocation:(MGLUserLocation *)userLocation {
+    
+    [self photosAroundLocation:userLocation.location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+        [_collectionView reloadData];
+    }];
+    
+    [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:YES];
+}
+
+#pragma mark - UISearchDelegate Methods
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+#pragma mark - HandleMapSearch Protocol Methods
 
 - (void)dropPinZoomIn:(MKPlacemark *)placemark {
     // cache the pin
@@ -604,6 +555,88 @@ BOOL firstTimeRequest = YES;
     
     [self.mapView addAnnotation: annotation];
     [self.mapView setCenterCoordinate:placemark.coordinate zoomLevel:12 animated:YES];
+}
+
+- (void)searchButtonClicked {
+    // Setting UISearchController
+    BLLocationSearchTable *locationSearchTable = [self.storyboard instantiateViewControllerWithIdentifier:@"LocationSearchTable"];
+    locationSearchTable.mapView = self.mapView;
+    locationSearchTable.handleMapSearchDelegate = self;
+    
+    // Configuring UISearchController.
+    self.resultSearchController = [[UISearchController alloc] initWithSearchResultsController:locationSearchTable];
+    self.resultSearchController.searchResultsUpdater = locationSearchTable;
+    self.resultSearchController.hidesNavigationBarDuringPresentation = NO;
+    self.resultSearchController.dimsBackgroundDuringPresentation = YES;
+    
+    // Configuring UISearchBar of UISearchBarController.
+    UISearchBar *searchBar = self.resultSearchController.searchBar;
+    [searchBar sizeToFit];
+    searchBar.placeholder = @"Search for cities";
+    
+    [self presentViewController:self.resultSearchController animated:YES completion:nil];
+}
+
+- (void)exploreButtonClicked {
+    // Create UIAlertController.
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Adventure Name" message:@"Enter the name of your adventure:" preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Add UITextField to UIAlertController.
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
+        textField.placeholder = @"Name";
+    }];
+    
+    // Add UIAlertAction.
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        // Get name for adventure from Text Field.
+        NSString *name = alert.textFields.firstObject.text;
+        
+        BLAdventureMO *adventure = [NSEntityDescription insertNewObjectForEntityForName:@"Adventure" inManagedObjectContext:[self managedObjectContext]];
+        adventure.date = [NSDate date];
+        adventure.name = name;
+        
+        
+        NSMutableOrderedSet *set = [[NSMutableOrderedSet alloc] init];
+        
+        // FIXME: Use sctruct instead of two arrays
+        for (NSUInteger i = 0; i < self.photoLocationsForAdv.count; i++) {
+            BLPinMO *pin = [NSEntityDescription insertNewObjectForEntityForName:@"Pin" inManagedObjectContext:[self managedObjectContext]];
+            
+            CLLocation *location = [self.photoLocationsForAdv objectAtIndex:i];
+            NSURL *url = [self.photoURLsForAdv objectAtIndex:i];
+            
+            pin.latitude = [NSNumber numberWithFloat:location.coordinate.latitude];
+            pin.longitude = [NSNumber numberWithFloat:location.coordinate.longitude];
+            pin.imageURL = url.absoluteString;
+            
+            [set addObject:pin];
+        }
+        
+        // sort pins based on locations.
+        [set sortUsingComparator:^NSComparisonResult(BLPinMO *obj1, BLPinMO *obj2) {
+            CLLocation *l1 = [[CLLocation alloc] initWithLatitude:obj1.latitude.doubleValue longitude:obj1.longitude.doubleValue];
+            CLLocation *l2 = [[CLLocation alloc] initWithLatitude:obj2.latitude.doubleValue longitude:obj2.longitude.doubleValue];
+            CLLocation *origin = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.longitude longitude:self.mapView.centerCoordinate.longitude];
+            
+            CLLocationDistance d1 = [l1 distanceFromLocation: origin];
+            CLLocationDistance d2 = [l2 distanceFromLocation: origin];
+            
+            return d1 < d2 ? NSOrderedAscending : d1 > d2 ? NSOrderedDescending : NSOrderedSame;
+        }];
+        
+        adventure.pins = [set copy];
+        
+        [self saveContext];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alert addAction:okAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 
 @end

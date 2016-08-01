@@ -7,7 +7,10 @@
 //
 
 #import <MapKit/MapKit.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "BLPathViewController.h"
+
+int indexPhoto = 0;
 
 @import Mapbox;
 @import MapboxDirections;
@@ -16,6 +19,8 @@
 
 @property (weak, nonatomic) IBOutlet MGLMapView *mapView;
 @property (strong, nonatomic) MBDirections *directions;
+@property (strong, nonatomic) NSMutableArray<MGLPointAnnotation *> *annotations;
+@property (strong, nonatomic) NSMutableArray<UIImage *> *pinImages;
 
 @end
 
@@ -23,15 +28,29 @@
 
 - (void)viewDidLoad {
     _directions = [MBDirections sharedDirections];
-    for (BLPinMO *pin in _adventure.pins) {
-        NSLog(@"%f - %f", pin.latitude.floatValue, pin.longitude.floatValue);
-    }
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self downloadAnnotationImages];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            for (BLPinMO *pin in _adventure.pins) {
+                NSLog(@"%f - %f", pin.latitude.floatValue, pin.longitude.floatValue);
+                MGLPointAnnotation *annotation = [[MGLPointAnnotation alloc] init];
+                annotation.coordinate = CLLocationCoordinate2DMake(pin.latitude.floatValue, pin.longitude.floatValue);
+                [_annotations addObject:annotation];
+                [self.mapView addAnnotation:annotation];
+            }
+        });
+    });
+    
+    
+    
     
     NSLog(@"====================================================");
     NSLog(@"====================================================");
     
     [self mapRequest];
-    
 }
 
 
@@ -44,7 +63,7 @@
                                          ];
     */
 
-    MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:[self waypointsArray] profileIdentifier:@"mapbox/driving"];
+    MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:[self waypointsArray] profileIdentifier:@"mapbox/walking"];
     options.includesSteps = YES;
     
     NSURLSessionDataTask *task = [self.directions calculateDirectionsWithOptions:options completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
@@ -85,7 +104,7 @@
             [self.mapView addAnnotation:routeline];
             [self.mapView setVisibleCoordinates:routeCoordinates count:route.coordinateCount edgePadding:UIEdgeInsetsZero animated:YES];
             
-            // Make sure to free this arary to avoid leaking memory.
+            // Make sure to free this array to avoid leaking memory.
             free(routeCoordinates);
         }
     }];
@@ -93,6 +112,7 @@
     [task resume];
 }
 
+// Create an NSArray of MBWaypoints for the directions request.
 - (NSArray<MBWaypoint *> *)waypointsArray {
     NSMutableArray *waypointsArray = [NSMutableArray array];
     for (BLPinMO *pin in self.adventure.pins) {
@@ -102,6 +122,32 @@
     }
     
     return [waypointsArray copy];
+}
+
+- (void)downloadAnnotationImages {
+    self.pinImages = [NSMutableArray array];
+    
+    for (BLPinMO *pin in self.adventure.pins) {
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[self URLFromPin:pin]]];
+        [self.pinImages addObject:image];
+    }
+    
+    NSLog(@"Descargadas");
+}
+
+- (NSURL *)URLFromPin:(BLPinMO *)pin {
+    NSMutableString *urlString = [NSMutableString stringWithString:pin.imageURL];
+    
+    // Change imageURL to imageURL of size: square
+    [urlString deleteCharactersInRange:NSMakeRange(urlString.length-4, 4)];
+    [urlString appendString:@"_s.jpg"];
+    return [NSURL URLWithString:urlString];
+}
+
+# pragma mark - MGLMapViewDelegate methods
+
+- (BOOL)mapView:(MGLMapView *)mapView annotationCanShowCallout:(id<MGLAnnotation>)annotation {
+    return YES;
 }
 
 @end

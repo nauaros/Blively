@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Delegate-->
@@ -18,11 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hEV-FS-waZ">
-                                <rect key="frame" x="76" y="146" width="449" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="t38-zG-yUT">
                                 <rect key="frame" x="0.0" y="371" width="600" height="172"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -65,23 +59,10 @@
                                     <outlet property="delegate" destination="F1X-sF-0QB" id="xxG-qm-4Xn"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2p-40-yYu">
-                                <rect key="frame" x="274" y="103" width="52" height="30"/>
-                                <state key="normal" title="Explore"/>
-                                <connections>
-                                    <action selector="explore:" destination="F1X-sF-0QB" eventType="touchUpInside" id="WFQ-zJ-PmY"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hEV-FS-waZ" firstAttribute="leading" secondItem="Tz5-St-MyT" secondAttribute="leadingMargin" constant="56" id="2a3-VW-dmh"/>
-                            <constraint firstItem="y2p-40-yYu" firstAttribute="centerX" secondItem="hEV-FS-waZ" secondAttribute="centerX" id="5v8-py-Cef"/>
-                            <constraint firstItem="y2p-40-yYu" firstAttribute="top" secondItem="Fc9-A3-0xQ" secondAttribute="bottom" constant="39" id="9cQ-He-3AF"/>
                             <constraint firstAttribute="trailing" secondItem="t38-zG-yUT" secondAttribute="trailing" id="LXT-Mt-goD"/>
-                            <constraint firstItem="hEV-FS-waZ" firstAttribute="top" secondItem="y2p-40-yYu" secondAttribute="bottom" constant="13" id="XQf-F8-j4T"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="hEV-FS-waZ" secondAttribute="trailing" constant="55" id="d18-ap-1O5"/>
-                            <constraint firstItem="hEV-FS-waZ" firstAttribute="centerX" secondItem="Tz5-St-MyT" secondAttribute="centerX" id="d2J-YM-PYg"/>
                             <constraint firstItem="t38-zG-yUT" firstAttribute="leading" secondItem="Tz5-St-MyT" secondAttribute="leading" id="g75-M3-XM9"/>
                             <constraint firstItem="t38-zG-yUT" firstAttribute="top" secondItem="Fc9-A3-0xQ" secondAttribute="bottom" priority="250" constant="307" id="mIk-6C-XRM"/>
                             <constraint firstItem="Hj9-av-Vsc" firstAttribute="top" secondItem="t38-zG-yUT" secondAttribute="bottom" constant="8" id="vdX-bg-rj9"/>
@@ -104,7 +85,6 @@
                     <connections>
                         <outlet property="collectionView" destination="t38-zG-yUT" id="f7T-iX-y5T"/>
                         <outlet property="mapView" destination="Tz5-St-MyT" id="Zee-YN-LMa"/>
-                        <outlet property="textField" destination="hEV-FS-waZ" id="EN1-RS-uCG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yZq-eP-pEK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -205,7 +185,7 @@
             </objects>
             <point key="canvasLocation" x="1730" y="806"/>
         </scene>
-        <!--Path View Controller-->
+        <!--Delegate-->
         <scene sceneID="fnQ-lB-2Ug">
             <objects>
                 <viewController id="d4M-Ls-5vG" customClass="BLPathViewController" sceneMemberID="viewController">
@@ -217,6 +197,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="delegate" destination="d4M-Ls-5vG" id="Ekl-J0-1Py"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="8XF-Lw-dYN" id="Abb-99-KbQ"/>

@@ -156,8 +156,7 @@
 				C99AE9801D41596C000F573F /* Explore Screen */,
 				C91044171D32AA6A0094B15B /* BLAdventuresViewController.h */,
 				C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */,
-				C910442C1D32B0100094B15B /* BLPathViewController.h */,
-				C910442D1D32B0100094B15B /* BLPathViewController.m */,
+				C9F6B14E1D4FB07200357617 /* Path Screen */,
 				C910442A1D32AC5B0094B15B /* Main.storyboard */,
 				C91043ED1D32A9760094B15B /* Assets.xcassets */,
 				C91043F21D32A9760094B15B /* Info.plist */,
@@ -221,6 +220,15 @@
 				C910441B1D32AAAF0094B15B /* BLPhotoCell.m */,
 			);
 			name = "Explore Screen";
+			sourceTree = "<group>";
+		};
+		C9F6B14E1D4FB07200357617 /* Path Screen */ = {
+			isa = PBXGroup;
+			children = (
+				C910442C1D32B0100094B15B /* BLPathViewController.h */,
+				C910442D1D32B0100094B15B /* BLPathViewController.m */,
+			);
+			name = "Path Screen";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
