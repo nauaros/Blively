@@ -11,5 +11,6 @@
 @interface BLPhotoCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
+@property (weak, nonatomic) IBOutlet UIImageView *checkImage;
 
 @end

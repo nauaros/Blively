@@ -21,9 +21,9 @@
 		C91044271D32ABE90094B15B /* BLPinMO.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044211D32ABE90094B15B /* BLPinMO.m */; };
 		C91044281D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044231D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m */; };
 		C91044291D32ABE90094B15B /* BLAdventureMO.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044251D32ABE90094B15B /* BLAdventureMO.m */; };
-		C910442B1D32AC5B0094B15B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C910442A1D32AC5B0094B15B /* Main.storyboard */; };
 		C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C910442D1D32B0100094B15B /* BLPathViewController.m */; };
 		C93E24031D3D5F97006A2848 /* BLLocationSearchTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */; };
+		C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C99F6DF81D5651DD00767F3B /* Main.storyboard */; };
 		DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,11 +76,11 @@
 		C91044231D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLAdventureMO+CoreDataProperties.m"; sourceTree = "<group>"; };
 		C91044241D32ABE90094B15B /* BLAdventureMO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAdventureMO.h; sourceTree = "<group>"; };
 		C91044251D32ABE90094B15B /* BLAdventureMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureMO.m; sourceTree = "<group>"; };
-		C910442A1D32AC5B0094B15B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C910442C1D32B0100094B15B /* BLPathViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPathViewController.h; sourceTree = "<group>"; };
 		C910442D1D32B0100094B15B /* BLPathViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPathViewController.m; sourceTree = "<group>"; };
 		C93E24011D3D5F97006A2848 /* BLLocationSearchTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLocationSearchTable.h; sourceTree = "<group>"; };
 		C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLocationSearchTable.m; sourceTree = "<group>"; };
+		C99F6DF81D5651DD00767F3B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,8 +157,8 @@
 				C91044171D32AA6A0094B15B /* BLAdventuresViewController.h */,
 				C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */,
 				C9F6B14E1D4FB07200357617 /* Path Screen */,
-				C910442A1D32AC5B0094B15B /* Main.storyboard */,
 				C91043ED1D32A9760094B15B /* Assets.xcassets */,
+				C99F6DF81D5651DD00767F3B /* Main.storyboard */,
 				C91043F21D32A9760094B15B /* Info.plist */,
 				C91043EF1D32A9760094B15B /* LaunchScreen.storyboard */,
 				C910441D1D32AACF0094B15B /* Model */,
@@ -340,7 +340,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C910442B1D32AC5B0094B15B /* Main.storyboard in Resources */,
+				C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */,
 				C91043F11D32A9760094B15B /* LaunchScreen.storyboard in Resources */,
 				C91043EE1D32A9760094B15B /* Assets.xcassets in Resources */,
 			);
@@ -571,6 +571,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -588,6 +589,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -40,6 +40,13 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A1l-Ww-FvI">
                                                     <rect key="frame" x="0.0" y="0.0" width="277" height="172"/>
                                                 </imageView>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ok" translatesAutoresizingMaskIntoConstraints="NO" id="Ao6-OX-LFt">
+                                                    <rect key="frame" x="237" y="8" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="32" id="Ett-CJ-Kgm"/>
+                                                        <constraint firstAttribute="width" constant="32" id="buu-rz-OaA"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -47,9 +54,12 @@
                                             <constraint firstAttribute="trailing" secondItem="A1l-Ww-FvI" secondAttribute="trailing" id="HVE-xd-jWb"/>
                                             <constraint firstItem="A1l-Ww-FvI" firstAttribute="top" secondItem="rrB-IM-6ek" secondAttribute="top" id="MwP-la-puf"/>
                                             <constraint firstAttribute="bottom" secondItem="A1l-Ww-FvI" secondAttribute="bottom" id="RPp-l4-Afn"/>
+                                            <constraint firstItem="Ao6-OX-LFt" firstAttribute="leading" secondItem="A1l-Ww-FvI" secondAttribute="leading" constant="237" id="WPy-y6-Ure"/>
+                                            <constraint firstItem="A1l-Ww-FvI" firstAttribute="top" secondItem="Ao6-OX-LFt" secondAttribute="bottom" constant="-40" id="cW1-nd-mOd"/>
                                             <constraint firstItem="A1l-Ww-FvI" firstAttribute="leading" secondItem="rrB-IM-6ek" secondAttribute="leading" id="xe5-29-MVU"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="checkImage" destination="Ao6-OX-LFt" id="a0m-Y3-hgD"/>
                                             <outlet property="photo" destination="A1l-Ww-FvI" id="sgB-Xb-evO"/>
                                         </connections>
                                     </collectionViewCell>
@@ -89,7 +99,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yZq-eP-pEK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1783" y="3"/>
+            <point key="canvasLocation" x="1836" y="3"/>
         </scene>
         <!--Location Search Table-->
         <scene sceneID="LTc-Yf-ve1">
@@ -248,4 +258,7 @@
             <point key="canvasLocation" x="1046" y="3"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ok" width="96" height="96"/>
+    </resources>
 </document>

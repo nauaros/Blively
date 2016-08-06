@@ -55,6 +55,7 @@ BOOL firstTimeRequest = YES;
 @property (nonatomic, strong) NSMutableOrderedSet<CLLocation *> *photoLocationsForAdv;
 @property (nonatomic, strong) NSMutableOrderedSet<NSURL *> *photoURLsForAdv;
 @property (nonatomic, strong) NSMutableDictionary *pinPoints;
+@property (nonatomic, strong) NSMutableArray<NSIndexPath *> *selectedItems;
 
 @property (nonatomic, strong) UISearchController *resultSearchController;
 @property (nonatomic, strong) MKPlacemark *selectedPin;
@@ -72,6 +73,7 @@ BOOL firstTimeRequest = YES;
     _photoLocations = [NSMutableArray array];
     _cache = [[NSCache alloc] init];
     _numberOfPhotos = INCR;
+
     
     // Configuring UINavigationItem.
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Explore" style:UIBarButtonItemStylePlain target:self action:@selector(exploreButtonClicked)];
@@ -368,7 +370,14 @@ BOOL firstTimeRequest = YES;
     }
     
     BLPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
+    cell.photo.contentMode = UIViewContentModeScaleAspectFill;
     cell.photo.image = [UIImage imageNamed:@"placeholder"];
+    
+    if ([self.selectedItems containsObject:indexPath]) {
+        cell.checkImage.hidden = NO;
+    } else {
+        cell.checkImage.hidden = YES;
+    }
     
     if (self.photoURLs.count != 0) {
         
@@ -433,41 +442,65 @@ BOOL firstTimeRequest = YES;
     
     if (!self.photoURLsForAdv) {
         self.photoURLsForAdv = [[NSMutableOrderedSet alloc] init];
-        
+    }
+    
+    if (!self.selectedItems) {
+        self.selectedItems = [[NSMutableArray alloc] init];
     }
     
     if (![self.photoLocationsForAdv containsObject:self.photoLocations[indexPath.item]] && ![self.photoURLsForAdv containsObject:self.photoURLs[indexPath.item]]) {
-        
-        CLLocation *location = self.photoLocations[indexPath.item];
-        [self.photoLocationsForAdv addObject:location];
-        [self.photoURLsForAdv addObject:self.photoURLs[indexPath.item]];
-        
-        MGLPointAnnotation *pin = [[MGLPointAnnotation alloc] init];
-        pin.coordinate = location.coordinate;
-        pin.title = [NSString stringWithFormat:@"%f - %f", location.coordinate.latitude, location.coordinate.longitude];
-        
-        [self.pinPoints setObject:pin forKey:@(indexPath.item)];
-        [self.mapView addAnnotation:pin];
-        
+     CLLocation *location = self.photoLocations[indexPath.item];
+     [self.photoLocationsForAdv addObject:location];
+     [self.photoURLsForAdv addObject:self.photoURLs[indexPath.item]];
+     
+     MGLPointAnnotation *pin = [[MGLPointAnnotation alloc] init];
+     pin.coordinate = location.coordinate;
+     pin.title = [NSString stringWithFormat:@"%f - %f", location.coordinate.latitude, location.coordinate.longitude];
+     
+     [self.pinPoints setObject:pin forKey:@(indexPath.item)];
+     [self.mapView addAnnotation:pin];
+
     } else {
-        [self.photoLocationsForAdv removeObject:self.photoLocations[indexPath.item]];
-        [self.photoURLsForAdv removeObject:self.photoURLs[indexPath.item]];
-        
-        MGLPointAnnotation *pin = [self.pinPoints objectForKey:@(indexPath.item)];
-        [self.pinPoints removeObjectForKey:@(indexPath.item)];
-        [self.mapView removeAnnotation:pin];
+     [self.photoLocationsForAdv removeObject:self.photoLocations[indexPath.item]];
+     [self.photoURLsForAdv removeObject:self.photoURLs[indexPath.item]];
+     
+     MGLPointAnnotation *pin = [self.pinPoints objectForKey:@(indexPath.item)];
+     [self.pinPoints removeObjectForKey:@(indexPath.item)];
+     [self.mapView removeAnnotation:pin];
     }
     
-    // show/hire rightBarButton.
+    if (![self.selectedItems containsObject:indexPath]) {
+        [self.selectedItems addObject:indexPath];
+    } else {
+        [self.selectedItems removeObject:indexPath];
+    }
+    
+    BLPhotoCell *cell = (BLPhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if (cell.checkImage.hidden) {
+        cell.checkImage.hidden = NO;
+    } else {
+        cell.checkImage.hidden = YES;
+    }
+    
+    // show/hide rightBarButton.
     if (self.photoLocationsForAdv.count >= 4) {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     } else {
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
-    
     NSLog(@"%lu - %lu", (unsigned long)self.photoLocationsForAdv.count, (unsigned long)self.photoURLsForAdv.count);
 }
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    // Block selection of UICollectionViewCell.
+    if (self.photoURLs.count >= indexPath.item && self.photoLocations.count >= indexPath.item) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 
 #pragma mark - NSManagedObjectContext
 
@@ -511,7 +544,7 @@ BOOL firstTimeRequest = YES;
         [_collectionView reloadData];
     }];
     
-    [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:YES];
+    [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:NO];
 }
 
 #pragma mark - UISearchDelegate Methods
@@ -535,6 +568,7 @@ BOOL firstTimeRequest = YES;
     [self.photoURLs removeAllObjects];
     [self.photoLocations removeAllObjects];
     [self.photoLocationsForAdv removeAllObjects];
+    [self.selectedItems removeAllObjects];
     [self.photoURLsForAdv removeAllObjects];
     [self.pinPoints removeAllObjects];
     [self.cache removeAllObjects];
