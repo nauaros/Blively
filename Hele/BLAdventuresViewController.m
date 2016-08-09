@@ -10,10 +10,13 @@
 #import "BLAdventureMO.h"
 #import "BLPinMO.h"
 #import "BLPathViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface BLAdventuresViewController ()
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) UIAlertAction *renameAction;
+@property (nonatomic, strong) NSString *adventureName;
 
 @end
 
@@ -23,7 +26,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -55,7 +57,7 @@
     return context;
 }
 
-#pragma mark - Table view data source methods
+#pragma mark - Table View Data Source Methods
 
 // The data source methods are handled primarily by the fetch results controllers
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -72,11 +74,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *cellIdentifier = @"AdventureCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     BLAdventureMO *adventure = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSURL *imageURL = [NSURL URLWithString:[adventure.pins firstObject].imageURL];
+    cell.imageView.contentMode = UIViewContentModeScaleToFill;
+    cell.imageView.clipsToBounds = YES;
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [cell.imageView sd_setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"placeholder"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    }];
+    
     cell.textLabel.text = adventure.name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"4.3 Km  %@", adventure.location];
+    cell.imageView.backgroundColor = [UIColor redColor];
     
     return cell;
 }
@@ -96,7 +109,6 @@
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
-        
     }
 }
 
@@ -114,7 +126,11 @@
     return NO;
 }
 
-#pragma mark - Fetched results controller
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+#pragma mark - Fetched Results Controller
 
 /*
  Returns the fetched resutls controller. Creates and configures the controller if necessary.
@@ -167,14 +183,13 @@
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
             
-            // TODO: Implement configureCell to change row at an specified index
-            // case NSFetchedResultsChangeUpdate:
-            //     [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            //     break;
+        case NSFetchedResultsChangeUpdate:
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
             break;
     }
 }
@@ -200,6 +215,94 @@
     [self.tableView endUpdates];
 }
 
+#pragma mark - TableViewDelegate Methods
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60.0;
+}
+
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // Create UITableViewRowAction for renaming purpose.
+    UITableViewRowAction *renameRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Rename" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        [self.tableView setEditing:NO animated:NO];
+        
+        // Adventure at index indexPath
+        BLAdventureMO *adventure = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        self.adventureName = [NSString stringWithString:adventure.name];
+        
+        // Create UIAlertController to enter new name.
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Enter a new name" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Add textField to Alert Controller.
+        [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.text = adventure.name;
+            textField.clearButtonMode = UITextFieldViewModeAlways;
+            
+            // Add observer to textField.
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTextFieldTextDidChangeNotification:) name:UITextFieldTextDidChangeNotification object:textField];
+        }];
+        
+        UIAlertAction *renameAction = [UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            // Rename adventure.
+            NSString *newName = alert.textFields.firstObject.text;
+            adventure.name = newName;
+            
+            // Save context.
+            NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+            
+            NSError *error;
+            if (![context save:&error]) {
+                
+                // TODO: Handle the error appropriately. Don't use abort()
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
+            
+            // Remove observer of textField.
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:alert.textFields.firstObject];
+        }];
+        
+        // disable renameAction.
+        renameAction.enabled = NO;
+        
+        self.renameAction = renameAction;
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            // Remove observer of textField.
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:alert.textFields.firstObject];
+        }];
+        
+        // Add actions.
+        [alert addAction:renameAction];
+        [alert addAction:cancelAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+    
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        
+        NSError *error;
+        if (![context save:&error]) {
+            
+            // TODO: Handle the error appropriately. Don't use abort()
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }];
+    
+    // Return array of row actions.
+    return @[deleteAction, renameRowAction];
+}
+
+- (void)handleTextFieldTextDidChangeNotification:(NSNotification *)notification {
+    UITextField *textField = (UITextField *)[notification object];
+    
+    // Enforce a minimum length of >= 1 for secure text alerts and text not equal to previous name.
+    self.renameAction.enabled = textField.text.length >= 1 && ![textField.text isEqualToString:self.adventureName];
+}
 
 #pragma mark - Navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

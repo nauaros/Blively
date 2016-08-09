@@ -172,18 +172,35 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="hBu-E1-uRm">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdventureCell" textLabel="SSb-gF-39O" detailTextLabel="9zS-JC-8os" style="IBUITableViewCellStyleSubtitle" id="z0I-jL-DUz" customClass="BLAdventureCell">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hBu-E1-uRm" id="uaY-Gk-wrd">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z0I-jL-DUz" id="UH3-sO-foe">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SSb-gF-39O">
+                                            <rect key="frame" x="15" y="6" width="30" height="19"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9zS-JC-8os">
+                                            <rect key="frame" x="15" y="25" width="40.5" height="13.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="d4M-Ls-5vG" kind="show" identifier="toPathViewController" id="K0f-Yo-WEA"/>
+                                    <segue destination="d4M-Ls-5vG" kind="show" identifier="toPathViewController" id="76b-9p-yw5"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
+                        <sections/>
                         <connections>
                             <outlet property="dataSource" destination="1lU-MU-VQN" id="AJY-4z-CHv"/>
                             <outlet property="delegate" destination="1lU-MU-VQN" id="Umi-uE-3TO"/>
@@ -198,7 +215,7 @@
         <!--Delegate-->
         <scene sceneID="fnQ-lB-2Ug">
             <objects>
-                <viewController id="d4M-Ls-5vG" customClass="BLPathViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PathViewController" id="d4M-Ls-5vG" customClass="BLPathViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="b2b-8a-qtL"/>
                         <viewControllerLayoutGuide type="bottom" id="Qn4-Ao-yN5"/>

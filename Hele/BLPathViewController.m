@@ -9,11 +9,12 @@
 #import <MapKit/MapKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "BLPathViewController.h"
-
-int indexPhoto = 0;
+#import "BLAnnotation.h"
 
 @import Mapbox;
 @import MapboxDirections;
+
+int indexPhoto = 0;
 
 @interface BLPathViewController ()
 
@@ -28,27 +29,12 @@ int indexPhoto = 0;
 
 - (void)viewDidLoad {
     _directions = [MBDirections sharedDirections];
+
+    for (BLPinMO *pin in _adventure.pins) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:pin.latitude.doubleValue longitude:pin.longitude.doubleValue];
+        [self addressForLocation:location];
+    }
     
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self downloadAnnotationImages];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            for (BLPinMO *pin in _adventure.pins) {
-                NSLog(@"%f - %f", pin.latitude.floatValue, pin.longitude.floatValue);
-                MGLPointAnnotation *annotation = [[MGLPointAnnotation alloc] init];
-                annotation.coordinate = CLLocationCoordinate2DMake(pin.latitude.floatValue, pin.longitude.floatValue);
-                [_annotations addObject:annotation];
-                [self.mapView addAnnotation:annotation];
-            }
-        });
-    });
-    
-    
-    
-    
-    NSLog(@"====================================================");
-    NSLog(@"====================================================");
     
     [self mapRequest];
 }
@@ -66,6 +52,7 @@ int indexPhoto = 0;
     MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:[self waypointsArray] profileIdentifier:@"mapbox/walking"];
     options.includesSteps = YES;
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSURLSessionDataTask *task = [self.directions calculateDirectionsWithOptions:options completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error calculating directions: %@", error);
@@ -107,6 +94,10 @@ int indexPhoto = 0;
             // Make sure to free this array to avoid leaking memory.
             free(routeCoordinates);
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        });
     }];
     
     [task resume];
@@ -144,7 +135,56 @@ int indexPhoto = 0;
     return [NSURL URLWithString:urlString];
 }
 
+- (void)addressForLocation:(CLLocation *)location {
+    // Instantiate a new CLGeocoder object.
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    
+    // Submit a reverse-geocodin request for the specified location.
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (!error && [placemarks count] > 0) {
+            CLPlacemark *placemark = [placemarks firstObject];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                MGLPointAnnotation *annotation = [[MGLPointAnnotation alloc] init];
+                annotation.coordinate = location.coordinate;
+                annotation.title = placemark.locality;
+                annotation.subtitle = placemark.subLocality;
+                [self.mapView addAnnotation:annotation];
+            });
+        }
+    }];
+}
+
 # pragma mark - MGLMapViewDelegate methods
+
+- (MGLAnnotationView *)mapView:(MGLMapView *)mapView viewForAnnotation:(id<MGLAnnotation>)annotation {
+    if (![annotation isKindOfClass:[MGLPointAnnotation class]]) {
+        return nil;
+    }
+    
+    NSString *reuseIdentifier = [NSString stringWithFormat:@"%f", annotation.coordinate.longitude];
+    
+    BLAnnotation *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:reuseIdentifier];
+    
+    // If there’s no reusable annotation view available, initialize a new one.
+    if (!annotationView) {
+        annotationView = [[BLAnnotation alloc] initWithReuseIdentifier:reuseIdentifier];
+    }
+    
+    return annotationView;
+}
+
+- (void)mapView:(MGLMapView *)mapView didSelectAnnotationView:(BLAnnotation *)annotationView {
+    annotationView.number.textColor = [UIColor blackColor];
+    annotationView.number.backgroundColor = [UIColor whiteColor];
+    annotationView.image.image = [UIImage imageNamed:@"user_location_white"];
+}
+
+- (void)mapView:(MGLMapView *)mapView didDeselectAnnotationView:(BLAnnotation *)annotationView {
+    annotationView.number.textColor = [UIColor whiteColor];
+    annotationView.number.backgroundColor = [UIColor colorWithRed:0.80 green:0.20 blue:0.20 alpha:1.0];
+    annotationView.image.image = [UIImage imageNamed:@"user_location_red"];
+}
 
 - (BOOL)mapView:(MGLMapView *)mapView annotationCanShowCallout:(id<MGLAnnotation>)annotation {
     return YES;

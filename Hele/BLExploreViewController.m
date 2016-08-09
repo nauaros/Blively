@@ -11,6 +11,8 @@
 #import "BLPinMO.h"
 #import "BLAdventureMO.h"
 #import "BLLocationSearchTable.h"
+#import "BLPathViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #define INCR 30     // Increment of photos in UICollectionView
 
@@ -103,10 +105,14 @@ BOOL firstTimeRequest = YES;
 {
     dispatch_group_t group = dispatch_group_create();
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
     dispatch_group_enter(group);
     [self photosAroundLocation:location number:number completionHandler:^{
         
         if (firstTimeRequest) {
+            firstTimeRequest = NO;
+            NSLog(@"Ya se hizo");
             for (NSDictionary *photo in self.photoIDs) {
             
                 dispatch_group_enter(group);
@@ -120,7 +126,6 @@ BOOL firstTimeRequest = YES;
                 }];
             }
             
-            firstTimeRequest = NO;
         } else {
             for (int i = self.numberOfPhotos - INCR; i < self.photoIDs.count; i++) {
                 
@@ -141,6 +146,7 @@ BOOL firstTimeRequest = YES;
     
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if (completionHandler) {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             completionHandler();
         }
     });
@@ -371,7 +377,7 @@ BOOL firstTimeRequest = YES;
     
     BLPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellID forIndexPath:indexPath];
     cell.photo.contentMode = UIViewContentModeScaleAspectFill;
-    cell.photo.image = [UIImage imageNamed:@"placeholder"];
+    /* cell.photo.image = [UIImage imageNamed:@"placeholder"]; */
     
     if ([self.selectedItems containsObject:indexPath]) {
         cell.checkImage.hidden = NO;
@@ -381,6 +387,7 @@ BOOL firstTimeRequest = YES;
     
     if (self.photoURLs.count != 0) {
         
+        /*
         if ( [self.cache objectForKey:@(indexPath.item)] != nil ) {
             cell.photo.image = [self.cache objectForKey:@(indexPath.item)];
         } else {
@@ -408,6 +415,13 @@ BOOL firstTimeRequest = YES;
             
             [_task resume];
         }
+         */
+        
+        // Image fetch using SDWebImage.
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        [cell.photo sd_setImageWithURL:self.photoURLs[indexPath.item] placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        }];
     }
     
     return cell;
@@ -540,22 +554,21 @@ BOOL firstTimeRequest = YES;
 
 - (void)mapView:(MGLMapView *)mapView didUpdateUserLocation:(MGLUserLocation *)userLocation {
     
-    [self photosAroundLocation:userLocation.location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
-        [_collectionView reloadData];
-    }];
+    if (firstTimeRequest) {
+        [self photosAroundLocation:userLocation.location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+            [_collectionView reloadData];
+        }];
     
-    [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:NO];
-}
-
-#pragma mark - UISearchDelegate Methods
-
-- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
-    self.navigationItem.rightBarButtonItem = nil;
+        [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:NO];
+    }
 }
 
 #pragma mark - HandleMapSearch Protocol Methods
 
 - (void)dropPinZoomIn:(MKPlacemark *)placemark {
+    // Cancel current download task.
+    [self.task cancel];
+    
     // cache the pin
     self.selectedPin = placemark;
     // clear existing pins
@@ -590,6 +603,8 @@ BOOL firstTimeRequest = YES;
     [self.mapView addAnnotation: annotation];
     [self.mapView setCenterCoordinate:placemark.coordinate zoomLevel:12 animated:YES];
 }
+
+#pragma mark - UI Methods
 
 - (void)searchButtonClicked {
     // Setting UISearchController
@@ -629,7 +644,7 @@ BOOL firstTimeRequest = YES;
         BLAdventureMO *adventure = [NSEntityDescription insertNewObjectForEntityForName:@"Adventure" inManagedObjectContext:[self managedObjectContext]];
         adventure.date = [NSDate date];
         adventure.name = name;
-        
+        adventure.location = self.selectedPin.locality;
         
         NSMutableOrderedSet *set = [[NSMutableOrderedSet alloc] init];
         
@@ -662,6 +677,38 @@ BOOL firstTimeRequest = YES;
         adventure.pins = [set copy];
         
         [self saveContext];
+        
+        // Configure BLPathViewController
+        BLPathViewController *pathViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PathViewController"];
+        pathViewController.adventure = adventure;
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissView)];
+        pathViewController.navigationItem.rightBarButtonItem = doneButton;
+        pathViewController.navigationItem.title = name;
+        
+        // Present in Navigation Controller to dismiss it.
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:pathViewController];
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:navController animated:YES completion:^{
+            // Clear existing pins.
+            [self.mapView removeAnnotations: self.mapView.annotations];
+            [self.mapView setCenterCoordinate:self.mapView.userLocation.location.coordinate zoomLevel:12 animated:YES];
+            
+            // Removing all photos of previous location
+            [self.photoIDs removeAllObjects];
+            [self.photoURLs removeAllObjects];
+            [self.photoLocations removeAllObjects];
+            [self.photoLocationsForAdv removeAllObjects];
+            [self.selectedItems removeAllObjects];
+            [self.photoURLsForAdv removeAllObjects];
+            [self.pinPoints removeAllObjects];
+            [self.cache removeAllObjects];
+            self.numberOfPhotos = INCR;
+            
+            
+            [self photosAroundLocation:self.mapView.userLocation.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+                [self.collectionView reloadData];
+            }];
+        }];
     }];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
@@ -671,6 +718,11 @@ BOOL firstTimeRequest = YES;
     
     [self presentViewController:alert animated:YES completion:nil];
     
+}
+
+// Dismiss presented view controller.
+- (void)dismissView {
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

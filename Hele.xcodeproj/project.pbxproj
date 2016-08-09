@@ -22,8 +22,13 @@
 		C91044281D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044231D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m */; };
 		C91044291D32ABE90094B15B /* BLAdventureMO.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044251D32ABE90094B15B /* BLAdventureMO.m */; };
 		C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C910442D1D32B0100094B15B /* BLPathViewController.m */; };
+		C917E9AF1D5A3BEC00CA1337 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */; };
+		C917E9B01D5A3BEC00CA1337 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C93E24031D3D5F97006A2848 /* BLLocationSearchTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */; };
+		C94B98B11D5A1F2E008D267C /* BLAnnotation.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */; };
+		C94B98B41D5A2176008D267C /* BLAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C94B98B31D5A2176008D267C /* BLAnnotation.m */; };
 		C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C99F6DF81D5651DD00767F3B /* Main.storyboard */; };
+		C9E7AD291D577CE800500963 /* BLAdventureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E7AD281D577CE800500963 /* BLAdventureCell.m */; };
 		DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +48,20 @@
 			remoteInfo = Hele;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C917E9B11D5A3BEC00CA1337 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C917E9B01D5A3BEC00CA1337 /* Mapbox.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hele.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,9 +97,16 @@
 		C91044251D32ABE90094B15B /* BLAdventureMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureMO.m; sourceTree = "<group>"; };
 		C910442C1D32B0100094B15B /* BLPathViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPathViewController.h; sourceTree = "<group>"; };
 		C910442D1D32B0100094B15B /* BLPathViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPathViewController.m; sourceTree = "<group>"; };
+		C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		C93E24011D3D5F97006A2848 /* BLLocationSearchTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLocationSearchTable.h; sourceTree = "<group>"; };
 		C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLocationSearchTable.m; sourceTree = "<group>"; };
+		C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLAnnotation.xib; sourceTree = "<group>"; };
+		C94B98B21D5A2176008D267C /* BLAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAnnotation.h; sourceTree = "<group>"; };
+		C94B98B31D5A2176008D267C /* BLAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAnnotation.m; sourceTree = "<group>"; };
 		C99F6DF81D5651DD00767F3B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C9C1BF031D5A366C008FB75B /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../mapbox-ios-sdk-3/dynamic/Mapbox.framework"; sourceTree = "<group>"; };
+		C9E7AD271D577CE800500963 /* BLAdventureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAdventureCell.h; sourceTree = "<group>"; };
+		C9E7AD281D577CE800500963 /* BLAdventureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */,
+				C917E9AF1D5A3BEC00CA1337 /* Mapbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +148,8 @@
 		9A3425F4808B08A2C2AEB538 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */,
+				C9C1BF031D5A366C008FB75B /* Mapbox.framework */,
 				008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */,
 			);
 			name = Frameworks;
@@ -156,7 +185,10 @@
 				C99AE9801D41596C000F573F /* Explore Screen */,
 				C91044171D32AA6A0094B15B /* BLAdventuresViewController.h */,
 				C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */,
+				C9E7AD271D577CE800500963 /* BLAdventureCell.h */,
+				C9E7AD281D577CE800500963 /* BLAdventureCell.m */,
 				C9F6B14E1D4FB07200357617 /* Path Screen */,
+				C94B98B51D5A33F0008D267C /* BLAnnotation */,
 				C91043ED1D32A9760094B15B /* Assets.xcassets */,
 				C99F6DF81D5651DD00767F3B /* Main.storyboard */,
 				C91043F21D32A9760094B15B /* Info.plist */,
@@ -209,6 +241,16 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		C94B98B51D5A33F0008D267C /* BLAnnotation */ = {
+			isa = PBXGroup;
+			children = (
+				C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */,
+				C94B98B21D5A2176008D267C /* BLAnnotation.h */,
+				C94B98B31D5A2176008D267C /* BLAnnotation.m */,
+			);
+			name = BLAnnotation;
+			sourceTree = "<group>";
+		};
 		C99AE9801D41596C000F573F /* Explore Screen */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +286,8 @@
 				C91043D91D32A9760094B15B /* Resources */,
 				36462FCEB2A8183593CF7EFF /* [CP] Embed Pods Frameworks */,
 				412427162F15A27002353E06 /* [CP] Copy Pods Resources */,
+				C917E9B11D5A3BEC00CA1337 /* Embed Frameworks */,
+				C917E9B21D5A3BF100CA1337 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -340,6 +384,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C94B98B11D5A1F2E008D267C /* BLAnnotation.xib in Resources */,
 				C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */,
 				C91043F11D32A9760094B15B /* LaunchScreen.storyboard in Resources */,
 				C91043EE1D32A9760094B15B /* Assets.xcassets in Resources */,
@@ -408,6 +453,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		C917E9B21D5A3BF100CA1337 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework/strip-frameworks.sh\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -415,6 +473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C94B98B41D5A2176008D267C /* BLAnnotation.m in Sources */,
 				C91044291D32ABE90094B15B /* BLAdventureMO.m in Sources */,
 				C91044161D32AA290094B15B /* BLExploreViewController.m in Sources */,
 				C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */,
@@ -422,6 +481,7 @@
 				C91043E31D32A9760094B15B /* AppDelegate.m in Sources */,
 				C91043E01D32A9760094B15B /* main.m in Sources */,
 				C91043EC1D32A9760094B15B /* Hele.xcdatamodeld in Sources */,
+				C9E7AD291D577CE800500963 /* BLAdventureCell.m in Sources */,
 				C91044191D32AA6A0094B15B /* BLAdventuresViewController.m in Sources */,
 				C91044271D32ABE90094B15B /* BLPinMO.m in Sources */,
 				C91044261D32ABE90094B15B /* BLPinMO+CoreDataProperties.m in Sources */,

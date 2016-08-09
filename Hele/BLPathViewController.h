@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BLAdventureMO.h"
 #import "BLPinMO.h"
+#import "BLExploreViewController.h"
 
 @interface BLPathViewController : UIViewController
 
