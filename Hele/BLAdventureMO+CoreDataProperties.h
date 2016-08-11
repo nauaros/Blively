@@ -2,7 +2,7 @@
 //  BLAdventureMO+CoreDataProperties.h
 //  Hele
 //
-//  Created by Naufal Aros El Morabet on 10/07/16.
+//  Created by Naufal Aros El Morabet on 11/08/16.
 //  Copyright © 2016 Naufal Aros. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSDate *date;
 @property (nullable, nonatomic, retain) NSString *location;
 @property (nullable, nonatomic, retain) NSString *name;
+@property (nullable, nonatomic, retain) NSNumber *distance;
 @property (nullable, nonatomic, retain) NSOrderedSet<BLPinMO *> *pins;
 
 @end

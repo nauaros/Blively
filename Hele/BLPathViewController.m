@@ -70,35 +70,6 @@
     [task resume];
 }
 
-- (double)distanceForAdventure:(BLAdventureMO *)adventure forCurrentLocation:(CLLocation *)currentLocation {
-    
-    // Create waypoints array.
-    MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:[self waypointsArrayforCurrentLocation:currentLocation withAdventure:adventure] profileIdentifier:@"mapbox/walking"];
-    options.includesSteps = NO;
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSURLSessionDataTask *task = [self.directions calculateDirectionsWithOptions:options completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"Error calculating directions: %@", error);
-            return;
-        }
-        
-        MBRoute *route = routes.firstObject;
-        
-        CLLocationDistance distance = 0;
-        for (MBRouteLeg *leg in route.legs) {
-            distance += leg.distance;
-        }
-        
-        NSLengthFormatter *distanceFormatter = [[NSLengthFormatter alloc] init];
-        NSString *formattedDistance = [distanceFormatter stringFromMeters:distance];
-        
-        return distance;
-    }];
-    
-    [task resume];
-}
-
 // Create an NSArray of MBWaypoints for the directions request.
 - (NSArray<MBWaypoint *> *)waypointsArrayforCurrentLocation:(CLLocation *)currentLocation withAdventure:(BLAdventureMO *)adventure {
     NSMutableArray *waypointsArray = [NSMutableArray array];
@@ -155,11 +126,25 @@
 # pragma mark - MGLMapViewDelegate Methods
 
 - (void)mapView:(MGLMapView *)mapView didUpdateUserLocation:(MGLUserLocation *)userLocation {
-    [self mapRequestforCurrentLocation:userLocation.location];
     
-    NSUInteger order = 1;
-    for (BLPinMO *pin in _adventure.pins) {
-        [self locatePin:pin withOrderNumber:order++];
+    CLLocation *firstLocation = [[CLLocation alloc] initWithLatitude:self.adventure.pins.firstObject.latitude.floatValue longitude:self.adventure.pins.firstObject.longitude.floatValue];
+    CLLocationDistance distance = [userLocation.location distanceFromLocation:firstLocation];
+    
+    // If not in current location, don't include current location.
+    if (distance >= 3000) {
+        [self mapRequestforCurrentLocation:firstLocation];
+        
+        NSUInteger order = 1;
+        for (BLPinMO *pin in _adventure.pins) {
+            [self locatePin:pin withOrderNumber:order++];
+        }
+    } else {
+        [self mapRequestforCurrentLocation:userLocation.location];
+        
+        NSUInteger order = 1;
+        for (BLPinMO *pin in _adventure.pins) {
+            [self locatePin:pin withOrderNumber:order++];
+        }
     }
 }
 
