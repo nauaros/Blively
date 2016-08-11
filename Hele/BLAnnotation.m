@@ -9,6 +9,9 @@
 #import "BLAnnotation.h"
 
 @interface BLAnnotation ()
+
+@property (strong, nonatomic) IBOutlet UIView *view;
+
 @end
 
 @implementation BLAnnotation
@@ -65,7 +68,6 @@
         [[NSBundle mainBundle] loadNibNamed:@"BLAnnotation" owner:self options:nil];
         
         // 2. Add as a subview.
-        self.view.layer.borderColor = [[UIColor blackColor] CGColor];
         [self addSubview:self.view];
     }
     

@@ -171,10 +171,11 @@ BOOL firstTimeRequest = YES;
     int has_geo = 1;
     CLLocationDegrees lat = location.coordinate.latitude;
     CLLocationDegrees lon = location.coordinate.longitude;
+    int radius = 6;
     int per_page = number;
     NSString *format = @"json";
     
-    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&tags=%@&accuracy=%d&content_type=%d&media=%@&has_geo=%d&lat=%f&lon=%f&per_page=%d&format=%@&nojsoncallback=1", apiKey, tags, accuracy, content_type, media, has_geo,lat, lon, per_page, format];
+    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&tags=%@&accuracy=%d&content_type=%d&media=%@&has_geo=%d&lat=%f&lon=%f&radius=%d&per_page=%d&format=%@&nojsoncallback=1", apiKey, tags, accuracy, content_type, media, has_geo,lat, lon, radius, per_page, format];
     
     NSURL *url = [NSURL URLWithString:urlString];
     
@@ -419,7 +420,7 @@ BOOL firstTimeRequest = YES;
         
         // Image fetch using SDWebImage.
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        [cell.photo sd_setImageWithURL:self.photoURLs[indexPath.item] placeholderImage:[UIImage imageNamed:@"placeholder.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [cell.photo sd_setImageWithURL:self.photoURLs[indexPath.item] placeholderImage:[UIImage imageNamed:@"placeholder"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         }];
     }
@@ -648,7 +649,6 @@ BOOL firstTimeRequest = YES;
         
         NSMutableOrderedSet *set = [[NSMutableOrderedSet alloc] init];
         
-        // FIXME: Use sctruct instead of two arrays
         for (NSUInteger i = 0; i < self.photoLocationsForAdv.count; i++) {
             BLPinMO *pin = [NSEntityDescription insertNewObjectForEntityForName:@"Pin" inManagedObjectContext:[self managedObjectContext]];
             

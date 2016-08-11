@@ -11,7 +11,6 @@
 
 @interface BLAnnotation : MGLAnnotationView
 
-@property (strong, nonatomic) IBOutlet UIView *view;
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *number;
 

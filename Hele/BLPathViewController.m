@@ -10,18 +10,17 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "BLPathViewController.h"
 #import "BLAnnotation.h"
+#import "BLCalloutView.h"
+#import "BLPointAnnotation.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @import Mapbox;
 @import MapboxDirections;
 
-int indexPhoto = 0;
-
-@interface BLPathViewController ()
+@interface BLPathViewController () <MGLCalloutViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MGLMapView *mapView;
 @property (strong, nonatomic) MBDirections *directions;
-@property (strong, nonatomic) NSMutableArray<MGLPointAnnotation *> *annotations;
-@property (strong, nonatomic) NSMutableArray<UIImage *> *pinImages;
 
 @end
 
@@ -29,28 +28,16 @@ int indexPhoto = 0;
 
 - (void)viewDidLoad {
     _directions = [MBDirections sharedDirections];
-
-    for (BLPinMO *pin in _adventure.pins) {
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:pin.latitude.doubleValue longitude:pin.longitude.doubleValue];
-        [self addressForLocation:location];
-    }
     
-    
-    [self mapRequest];
 }
 
 
 # pragma mark - Supporting methods
 
-- (void)mapRequest {
-   /* NSArray<MBWaypoint *> *waypoints = @[
-                                         [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.9131752, -77.03240447) coordinateAccuracy:-1 name:@"Mapbox"],
-                                         [[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(38.8977, -77.0365) coordinateAccuracy:-1 name:@"White House"]
-                                         ];
-    */
+- (void)mapRequestforCurrentLocation:(CLLocation *)currentLocation {
 
-    MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:[self waypointsArray] profileIdentifier:@"mapbox/walking"];
-    options.includesSteps = YES;
+    MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:[self waypointsArrayforCurrentLocation:currentLocation withAdventure:self.adventure] profileIdentifier:@"mapbox/walking"];
+    options.includesSteps = NO;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSURLSessionDataTask *task = [self.directions calculateDirectionsWithOptions:options completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
@@ -60,26 +47,6 @@ int indexPhoto = 0;
         }
         
         MBRoute *route = routes.firstObject;
-        MBRouteLeg *leg = route.legs.firstObject;
-        if (leg) {
-            NSLog(@"Route via %@:", leg);
-            
-            NSLengthFormatter *distanceFormatter = [[NSLengthFormatter alloc] init];
-            NSString *formattedDistance = [distanceFormatter stringFromMeters:leg.distance];
-            
-            NSDateComponentsFormatter *travelTimeFormatter = [[NSDateComponentsFormatter alloc] init];
-            travelTimeFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleShort;
-            NSString *formattedTravelTime = [travelTimeFormatter stringFromTimeInterval:route.expectedTravelTime];
-            
-            NSLog(@"Distance: %@; ETA: %@", formattedDistance, formattedTravelTime);
-            
-            for (MBRouteStep *step in leg.steps) {
-                NSLog(@"%@", step.instructions);
-                NSString *formattedDistance = [distanceFormatter stringFromMeters:step.distance];
-                NSLog(@"- %@ -", formattedDistance);
-            }
-            
-        }
         
         if (route.coordinateCount) {
             // Convert the route's coordinates into a polyline.
@@ -103,27 +70,47 @@ int indexPhoto = 0;
     [task resume];
 }
 
+- (double)distanceForAdventure:(BLAdventureMO *)adventure forCurrentLocation:(CLLocation *)currentLocation {
+    
+    // Create waypoints array.
+    MBRouteOptions *options = [[MBRouteOptions alloc] initWithWaypoints:[self waypointsArrayforCurrentLocation:currentLocation withAdventure:adventure] profileIdentifier:@"mapbox/walking"];
+    options.includesSteps = NO;
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSURLSessionDataTask *task = [self.directions calculateDirectionsWithOptions:options completionHandler:^(NSArray<MBWaypoint *> * _Nullable waypoints, NSArray<MBRoute *> * _Nullable routes, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error calculating directions: %@", error);
+            return;
+        }
+        
+        MBRoute *route = routes.firstObject;
+        
+        CLLocationDistance distance = 0;
+        for (MBRouteLeg *leg in route.legs) {
+            distance += leg.distance;
+        }
+        
+        NSLengthFormatter *distanceFormatter = [[NSLengthFormatter alloc] init];
+        NSString *formattedDistance = [distanceFormatter stringFromMeters:distance];
+        
+        return distance;
+    }];
+    
+    [task resume];
+}
+
 // Create an NSArray of MBWaypoints for the directions request.
-- (NSArray<MBWaypoint *> *)waypointsArray {
+- (NSArray<MBWaypoint *> *)waypointsArrayforCurrentLocation:(CLLocation *)currentLocation withAdventure:(BLAdventureMO *)adventure {
     NSMutableArray *waypointsArray = [NSMutableArray array];
-    for (BLPinMO *pin in self.adventure.pins) {
+    [waypointsArray addObject:[[MBWaypoint alloc] initWithCoordinate:currentLocation.coordinate coordinateAccuracy:-1 name:@""]];
+    
+    for (BLPinMO *pin in adventure.pins) {
         CLLocationDegrees lat = pin.latitude.doubleValue;
         CLLocationDegrees lon = pin.longitude.doubleValue;
         [waypointsArray addObject:[[MBWaypoint alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lon) coordinateAccuracy:-1 name:@""]];
     }
     
     return [waypointsArray copy];
-}
-
-- (void)downloadAnnotationImages {
-    self.pinImages = [NSMutableArray array];
-    
-    for (BLPinMO *pin in self.adventure.pins) {
-        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[self URLFromPin:pin]]];
-        [self.pinImages addObject:image];
-    }
-    
-    NSLog(@"Descargadas");
 }
 
 - (NSURL *)URLFromPin:(BLPinMO *)pin {
@@ -135,29 +122,48 @@ int indexPhoto = 0;
     return [NSURL URLWithString:urlString];
 }
 
-- (void)addressForLocation:(CLLocation *)location {
+- (void)locatePin:(BLPinMO *)pin withOrderNumber:(NSUInteger)number {
     // Instantiate a new CLGeocoder object.
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:pin.latitude.doubleValue longitude:pin.longitude.doubleValue];
     
     // Submit a reverse-geocodin request for the specified location.
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
         if (!error && [placemarks count] > 0) {
             CLPlacemark *placemark = [placemarks firstObject];
             
+            NSString *direction = [NSString stringWithFormat:@"%@, %@", placemark.subThoroughfare, placemark.thoroughfare];;
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                MGLPointAnnotation *annotation = [[MGLPointAnnotation alloc] init];
+                BLPointAnnotation *annotation = [[BLPointAnnotation alloc] init];
+                
+                // Set location.
                 annotation.coordinate = location.coordinate;
-                annotation.title = placemark.locality;
-                annotation.subtitle = placemark.subLocality;
+                // Set image URL
+                annotation.image = [NSURL URLWithString:pin.imageURL];
+                // Set number.
+                annotation.numberOrder = number;
+                // Set title.
+                annotation.title = direction;
+                
                 [self.mapView addAnnotation:annotation];
             });
         }
     }];
 }
 
-# pragma mark - MGLMapViewDelegate methods
+# pragma mark - MGLMapViewDelegate Methods
 
-- (MGLAnnotationView *)mapView:(MGLMapView *)mapView viewForAnnotation:(id<MGLAnnotation>)annotation {
+- (void)mapView:(MGLMapView *)mapView didUpdateUserLocation:(MGLUserLocation *)userLocation {
+    [self mapRequestforCurrentLocation:userLocation.location];
+    
+    NSUInteger order = 1;
+    for (BLPinMO *pin in _adventure.pins) {
+        [self locatePin:pin withOrderNumber:order++];
+    }
+}
+
+- (MGLAnnotationView *)mapView:(MGLMapView *)mapView viewForAnnotation:(BLPointAnnotation *)annotation {
     if (![annotation isKindOfClass:[MGLPointAnnotation class]]) {
         return nil;
     }
@@ -169,6 +175,7 @@ int indexPhoto = 0;
     // If there’s no reusable annotation view available, initialize a new one.
     if (!annotationView) {
         annotationView = [[BLAnnotation alloc] initWithReuseIdentifier:reuseIdentifier];
+        annotationView.number.text = [NSString stringWithFormat:@"%lu", annotation.numberOrder];
     }
     
     return annotationView;
@@ -184,6 +191,21 @@ int indexPhoto = 0;
     annotationView.number.textColor = [UIColor whiteColor];
     annotationView.number.backgroundColor = [UIColor colorWithRed:0.80 green:0.20 blue:0.20 alpha:1.0];
     annotationView.image.image = [UIImage imageNamed:@"user_location_red"];
+}
+ 
+- (UIView<MGLCalloutView> *)mapView:(MGLMapView *)mapView calloutViewForAnnotation:(BLPointAnnotation *)annotation
+{
+    // Instantiate and return our custom callout view
+    BLCalloutView *calloutView = [[BLCalloutView alloc] init];
+    calloutView.representedObject = annotation;
+    
+    // Download image for callout view.
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [calloutView.photo sd_setImageWithURL:annotation.image placeholderImage:[UIImage imageNamed:@"placeholder"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    }];
+    
+    return calloutView;
 }
 
 - (BOOL)mapView:(MGLMapView *)mapView annotationCanShowCallout:(id<MGLAnnotation>)annotation {

@@ -24,11 +24,14 @@
 		C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C910442D1D32B0100094B15B /* BLPathViewController.m */; };
 		C917E9AF1D5A3BEC00CA1337 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */; };
 		C917E9B01D5A3BEC00CA1337 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C917E9B71D5A742D00CA1337 /* BLCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C917E9B61D5A742D00CA1337 /* BLCalloutView.m */; };
+		C917E9B91D5A744900CA1337 /* BLCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C917E9B81D5A744900CA1337 /* BLCalloutView.xib */; };
 		C93E24031D3D5F97006A2848 /* BLLocationSearchTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */; };
 		C94B98B11D5A1F2E008D267C /* BLAnnotation.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */; };
 		C94B98B41D5A2176008D267C /* BLAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C94B98B31D5A2176008D267C /* BLAnnotation.m */; };
 		C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C99F6DF81D5651DD00767F3B /* Main.storyboard */; };
 		C9E7AD291D577CE800500963 /* BLAdventureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E7AD281D577CE800500963 /* BLAdventureCell.m */; };
+		C9FB9CDE1D5CC82F00322067 /* BLPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FB9CDD1D5CC82F00322067 /* BLPointAnnotation.m */; };
 		DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +101,9 @@
 		C910442C1D32B0100094B15B /* BLPathViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPathViewController.h; sourceTree = "<group>"; };
 		C910442D1D32B0100094B15B /* BLPathViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPathViewController.m; sourceTree = "<group>"; };
 		C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
+		C917E9B51D5A742D00CA1337 /* BLCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCalloutView.h; sourceTree = "<group>"; };
+		C917E9B61D5A742D00CA1337 /* BLCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCalloutView.m; sourceTree = "<group>"; };
+		C917E9B81D5A744900CA1337 /* BLCalloutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLCalloutView.xib; sourceTree = "<group>"; };
 		C93E24011D3D5F97006A2848 /* BLLocationSearchTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLocationSearchTable.h; sourceTree = "<group>"; };
 		C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLocationSearchTable.m; sourceTree = "<group>"; };
 		C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLAnnotation.xib; sourceTree = "<group>"; };
@@ -107,6 +113,8 @@
 		C9C1BF031D5A366C008FB75B /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../mapbox-ios-sdk-3/dynamic/Mapbox.framework"; sourceTree = "<group>"; };
 		C9E7AD271D577CE800500963 /* BLAdventureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAdventureCell.h; sourceTree = "<group>"; };
 		C9E7AD281D577CE800500963 /* BLAdventureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureCell.m; sourceTree = "<group>"; };
+		C9FB9CDC1D5CC82F00322067 /* BLPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPointAnnotation.h; sourceTree = "<group>"; };
+		C9FB9CDD1D5CC82F00322067 /* BLPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPointAnnotation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +197,7 @@
 				C9E7AD281D577CE800500963 /* BLAdventureCell.m */,
 				C9F6B14E1D4FB07200357617 /* Path Screen */,
 				C94B98B51D5A33F0008D267C /* BLAnnotation */,
+				C917E9B41D5A6FDD00CA1337 /* BLCalloutView */,
 				C91043ED1D32A9760094B15B /* Assets.xcassets */,
 				C99F6DF81D5651DD00767F3B /* Main.storyboard */,
 				C91043F21D32A9760094B15B /* Info.plist */,
@@ -241,12 +250,22 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		C917E9B41D5A6FDD00CA1337 /* BLCalloutView */ = {
+			isa = PBXGroup;
+			children = (
+				C917E9B51D5A742D00CA1337 /* BLCalloutView.h */,
+				C917E9B61D5A742D00CA1337 /* BLCalloutView.m */,
+				C917E9B81D5A744900CA1337 /* BLCalloutView.xib */,
+			);
+			name = BLCalloutView;
+			sourceTree = "<group>";
+		};
 		C94B98B51D5A33F0008D267C /* BLAnnotation */ = {
 			isa = PBXGroup;
 			children = (
-				C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */,
 				C94B98B21D5A2176008D267C /* BLAnnotation.h */,
 				C94B98B31D5A2176008D267C /* BLAnnotation.m */,
+				C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */,
 			);
 			name = BLAnnotation;
 			sourceTree = "<group>";
@@ -269,6 +288,8 @@
 			children = (
 				C910442C1D32B0100094B15B /* BLPathViewController.h */,
 				C910442D1D32B0100094B15B /* BLPathViewController.m */,
+				C9FB9CDC1D5CC82F00322067 /* BLPointAnnotation.h */,
+				C9FB9CDD1D5CC82F00322067 /* BLPointAnnotation.m */,
 			);
 			name = "Path Screen";
 			sourceTree = "<group>";
@@ -386,6 +407,7 @@
 			files = (
 				C94B98B11D5A1F2E008D267C /* BLAnnotation.xib in Resources */,
 				C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */,
+				C917E9B91D5A744900CA1337 /* BLCalloutView.xib in Resources */,
 				C91043F11D32A9760094B15B /* LaunchScreen.storyboard in Resources */,
 				C91043EE1D32A9760094B15B /* Assets.xcassets in Resources */,
 			);
@@ -474,10 +496,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C94B98B41D5A2176008D267C /* BLAnnotation.m in Sources */,
+				C9FB9CDE1D5CC82F00322067 /* BLPointAnnotation.m in Sources */,
 				C91044291D32ABE90094B15B /* BLAdventureMO.m in Sources */,
 				C91044161D32AA290094B15B /* BLExploreViewController.m in Sources */,
 				C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */,
 				C93E24031D3D5F97006A2848 /* BLLocationSearchTable.m in Sources */,
+				C917E9B71D5A742D00CA1337 /* BLCalloutView.m in Sources */,
 				C91043E31D32A9760094B15B /* AppDelegate.m in Sources */,
 				C91043E01D32A9760094B15B /* main.m in Sources */,
 				C91043EC1D32A9760094B15B /* Hele.xcdatamodeld in Sources */,
