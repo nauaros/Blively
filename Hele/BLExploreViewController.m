@@ -12,7 +12,9 @@
 #import "BLAdventureMO.h"
 #import "BLLocationSearchTable.h"
 #import "BLPathViewController.h"
+#import "Reachability.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <ChameleonFramework/Chameleon.h>
 
 #define INCR 30     // Increment of photos in UICollectionView
 
@@ -62,6 +64,8 @@ BOOL firstTimeRequest = YES;
 @property (nonatomic, strong) UISearchController *resultSearchController;
 @property (nonatomic, strong) MKPlacemark *selectedPin;
 
+@property (nonatomic, strong) UIAlertAction *okAction;
+
 @end
 
 @implementation BLExploreViewController
@@ -75,7 +79,14 @@ BOOL firstTimeRequest = YES;
     _photoLocations = [NSMutableArray array];
     _cache = [[NSCache alloc] init];
     _numberOfPhotos = INCR;
-
+    
+    // Configure navigation bar style.
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.85]};
+    
+    // Configure tab bat style.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
     
     // Configuring UINavigationItem.
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Explore" style:UIBarButtonItemStylePlain target:self action:@selector(exploreButtonClicked)];
@@ -504,16 +515,39 @@ BOOL firstTimeRequest = YES;
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     
+    
+    
     NSLog(@"%lu - %lu", (unsigned long)self.photoLocationsForAdv.count, (unsigned long)self.photoURLsForAdv.count);
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     // Block selection of UICollectionViewCell.
-    if (self.photoURLs.count >= indexPath.item && self.photoLocations.count >= indexPath.item) {
+    BLPhotoCell *cell = (BLPhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    if (self.photoLocationsForAdv.count <= 23) {
         return YES;
-    } else {
-        return NO;
+    } else if (cell.checkImage.hidden == NO) {
+        return YES;
     }
+    
+    // Create UIAlertController.
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Photos Limit" message:@"You can only select up to 24 photos." preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Change background UIAlertController.
+    UIView *subview = alert.view.subviews.firstObject;
+    UIView *alertContentView = subview.subviews.firstObject;
+    alertContentView.backgroundColor = [UIColor whiteColor];
+    alertContentView.layer.cornerRadius = 10;
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    // Change tintColor UIAlertController.
+    alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    
+    return NO;
 }
 
 
@@ -555,12 +589,35 @@ BOOL firstTimeRequest = YES;
 
 - (void)mapView:(MGLMapView *)mapView didUpdateUserLocation:(MGLUserLocation *)userLocation {
     
-    if (firstTimeRequest) {
-        [self photosAroundLocation:userLocation.location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
-            [_collectionView reloadData];
-        }];
+    Reachability *internetReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [internetReachability currentReachabilityStatus];
     
-        [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:NO];
+    if (networkStatus != NotReachable) {
+        if (firstTimeRequest) {
+            [self photosAroundLocation:userLocation.location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+                [_collectionView reloadData];
+            }];
+    
+            [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:NO];
+        }
+    } else {
+        // Present UIAlertController to alert user.
+        // Create UIAlertController.
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Load Data" message:@"No internet connection available." preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Change background UIAlertController.
+        UIView *subview = alert.view.subviews.firstObject;
+        UIView *alertContentView = subview.subviews.firstObject;
+        alertContentView.backgroundColor = [UIColor whiteColor];
+        alertContentView.layer.cornerRadius = 10;
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        // Change tintColor UIAlertController.
+        alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
     }
 }
 
@@ -615,6 +672,8 @@ BOOL firstTimeRequest = YES;
     
     // Configuring UISearchController.
     self.resultSearchController = [[UISearchController alloc] initWithSearchResultsController:locationSearchTable];
+    
+    
     self.resultSearchController.searchResultsUpdater = locationSearchTable;
     self.resultSearchController.hidesNavigationBarDuringPresentation = NO;
     self.resultSearchController.dimsBackgroundDuringPresentation = YES;
@@ -622,6 +681,10 @@ BOOL firstTimeRequest = YES;
     // Configuring UISearchBar of UISearchBarController.
     UISearchBar *searchBar = self.resultSearchController.searchBar;
     [searchBar sizeToFit];
+    
+    
+    searchBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    searchBar.tintColor = [UIColor whiteColor];
     searchBar.placeholder = @"Search for cities";
     
     [self presentViewController:self.resultSearchController animated:YES completion:nil];
@@ -631,9 +694,19 @@ BOOL firstTimeRequest = YES;
     // Create UIAlertController.
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Adventure Name" message:@"Enter the name of your adventure:" preferredStyle:UIAlertControllerStyleAlert];
     
+    // Change background UIAlertController.
+    UIView *subview = alert.view.subviews.firstObject;
+    UIView *alertContentView = subview.subviews.firstObject;
+    alertContentView.backgroundColor = [UIColor whiteColor];
+    alertContentView.layer.cornerRadius = 10;
+    
     // Add UITextField to UIAlertController.
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
         textField.placeholder = @"Name";
+        textField.clearButtonMode = UITextFieldViewModeAlways;
+        
+        // Add observer to textField.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleTextFieldTextDidChangeNotification:) name:UITextFieldTextDidChangeNotification object:textField];
     }];
     
     // Add UIAlertAction.
@@ -704,25 +777,45 @@ BOOL firstTimeRequest = YES;
             [self.cache removeAllObjects];
             self.numberOfPhotos = INCR;
             
-            
             [self photosAroundLocation:self.mapView.userLocation.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
                 [self.collectionView reloadData];
             }];
         }];
+        
+        // Remove observer of textField.
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:alert.textFields.firstObject];
     }];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    // disable renameAction.
+    okAction.enabled = NO;
+    
+    self.okAction = okAction;
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        // Remove observer of textField.
+         [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:alert.textFields.firstObject];
+    }];
     
     [alert addAction:okAction];
     [alert addAction:cancelAction];
     
     [self presentViewController:alert animated:YES completion:nil];
     
+    // Change tintColor UIAlertController.
+    alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    
 }
 
 // Dismiss presented view controller.
 - (void)dismissView {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)handleTextFieldTextDidChangeNotification:(NSNotification *)notification {
+    UITextField *textField = (UITextField *)[notification object];
+    
+    // Enforce a minimum length of >= 1 for secure text alerts and text not equal to previous name.
+    self.okAction.enabled = textField.text.length >= 1;;
 }
 
 @end

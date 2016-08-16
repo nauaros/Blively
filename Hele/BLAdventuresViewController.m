@@ -11,6 +11,7 @@
 #import "BLPinMO.h"
 #import "BLPathViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <ChameleonFramework/Chameleon.h>
 
 @interface BLAdventuresViewController ()
 
@@ -33,6 +34,14 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     // TODO: Handle the error appropriately. Don't use abort()
+    
+    // Configure navigation bar style.
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.85]};
+    
+    // Configure tab bat style.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
     
     NSError *error;
     if (![[self fetchedResultsController] performFetch:&error]) {
@@ -88,7 +97,13 @@
     }];
     
     cell.textLabel.text = adventure.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"4.3 Km  %@", adventure.location];
+    
+    if (adventure.location) {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", adventure.location];
+    } else {
+        cell.detailTextLabel.text = @"";
+    }
+    
     cell.imageView.backgroundColor = [UIColor redColor];
     
     return cell;
@@ -207,6 +222,12 @@
         case NSFetchedResultsChangeDelete:
             [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
+            
+        case NSFetchedResultsChangeMove:
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            break;
     }
 }
 
@@ -233,6 +254,12 @@
         
         // Create UIAlertController to enter new name.
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Enter a new name" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Change background UIAlertController.
+        UIView *subview = alert.view.subviews.firstObject;
+        UIView *alertContentView = subview.subviews.firstObject;
+        alertContentView.backgroundColor = [UIColor whiteColor];
+        alertContentView.layer.cornerRadius = 10;
         
         // Add textField to Alert Controller.
         [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
@@ -278,6 +305,8 @@
         [alert addAction:cancelAction];
         
         [self presentViewController:alert animated:YES completion:nil];
+        // Change tintColor UIAlertController.
+        alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
     }];
     
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {

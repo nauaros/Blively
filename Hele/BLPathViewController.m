@@ -13,6 +13,7 @@
 #import "BLCalloutView.h"
 #import "BLPointAnnotation.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <ChameleonFramework/Chameleon.h>
 
 @import Mapbox;
 @import MapboxDirections;
@@ -27,6 +28,15 @@
 @implementation BLPathViewController
 
 - (void)viewDidLoad {
+    
+    // Configure navigation bar style.
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.85]};
+    
+    // Configure tab bat style.
+    self.tabBarController.tabBar.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    
     _directions = [MBDirections sharedDirections];
     
 }
@@ -174,7 +184,7 @@
 
 - (void)mapView:(MGLMapView *)mapView didDeselectAnnotationView:(BLAnnotation *)annotationView {
     annotationView.number.textColor = [UIColor whiteColor];
-    annotationView.number.backgroundColor = [UIColor colorWithRed:0.80 green:0.20 blue:0.20 alpha:1.0];
+    annotationView.number.backgroundColor = [UIColor colorWithRed:0.60 green:0.00 blue:0.12 alpha:1.0];
     annotationView.image.image = [UIImage imageNamed:@"user_location_red"];
 }
  

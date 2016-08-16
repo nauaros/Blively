@@ -8,6 +8,7 @@
 
 #import <MapKit/MapKit.h>
 #import "BLLocationSearchTable.h"
+#import <ChameleonFramework/Chameleon.h>
 
 @import Mapbox;
 
@@ -22,7 +23,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //_geocoder = [MBGeocoder sharedGeocoder];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.85]};
 }
 
 - (void)didReceiveMemoryWarning {

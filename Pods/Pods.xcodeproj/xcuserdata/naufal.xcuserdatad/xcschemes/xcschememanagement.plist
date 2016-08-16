@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>ChameleonFramework.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MapboxDirections.swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +32,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>03A07E5A9B93901EB6ADAAB4B1F39C7A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>1C080055654F530AA845FF3429077B74</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1CF89D483EEC7D2F0B494CCA03A0252D</key>
+		<key>7C93BB2C850F2E4BB09BF2BBE1A027FE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7C93BB2C850F2E4BB09BF2BBE1A027FE</key>
+		<key>89B2169FB9BA7763D4BF8C01B7A88E00</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9B57F4EE4746045CEAE2D933A3C8EC9E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C73E06F4C8A2FEC9D29EC1FE5E966833</key>
 		<dict>
 			<key>primary</key>
 			<true/>

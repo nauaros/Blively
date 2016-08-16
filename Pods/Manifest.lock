@@ -1,12 +1,16 @@
 PODS:
+  - ChameleonFramework (2.1.0):
+    - ChameleonFramework/Default (= 2.1.0)
+  - ChameleonFramework/Default (2.1.0)
   - MapboxDirections.swift (0.6.0):
     - Polyline (~> 3.2)
-  - Polyline (3.2.1)
+  - Polyline (3.2.2)
   - SDWebImage (3.8.1):
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
 
 DEPENDENCIES:
+  - ChameleonFramework
   - MapboxDirections.swift (from `https://github.com/mapbox/MapboxDirections.swift.git`, tag `v0.6.0`)
   - SDWebImage (~> 3.8)
 
@@ -21,10 +25,11 @@ CHECKOUT OPTIONS:
     :tag: v0.6.0
 
 SPEC CHECKSUMS:
+  ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   MapboxDirections.swift: 144cefb4386d419f916ce27928834c28bbaafb4f
-  Polyline: 4579e57a62a5e876944c41884194e24ab7021d89
+  Polyline: 4968bf16ceddd579e1e60820edc74a2271ec9c59
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
 
-PODFILE CHECKSUM: 211c72fa2e32c46429af5d216e508578afff2f82
+PODFILE CHECKSUM: f729902f63ac662a9ed6a0e201a96e2341712432
 
 COCOAPODS: 1.0.1

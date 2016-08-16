@@ -11,7 +11,6 @@
 		C91043E31D32A9760094B15B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C91043E21D32A9760094B15B /* AppDelegate.m */; };
 		C91043EC1D32A9760094B15B /* Hele.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C91043EA1D32A9760094B15B /* Hele.xcdatamodeld */; };
 		C91043EE1D32A9760094B15B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C91043ED1D32A9760094B15B /* Assets.xcassets */; };
-		C91043F11D32A9760094B15B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C91043EF1D32A9760094B15B /* LaunchScreen.storyboard */; };
 		C91043FC1D32A9760094B15B /* HeleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C91043FB1D32A9760094B15B /* HeleTests.m */; };
 		C91044071D32A9760094B15B /* HeleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044061D32A9760094B15B /* HeleUITests.m */; };
 		C91044161D32AA290094B15B /* BLExploreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044151D32AA290094B15B /* BLExploreViewController.m */; };
@@ -26,10 +25,12 @@
 		C917E9B01D5A3BEC00CA1337 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C917E9B71D5A742D00CA1337 /* BLCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C917E9B61D5A742D00CA1337 /* BLCalloutView.m */; };
 		C917E9B91D5A744900CA1337 /* BLCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C917E9B81D5A744900CA1337 /* BLCalloutView.xib */; };
+		C92B60051D60EC36005EC21B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C92B60041D60EC36005EC21B /* Launch Screen.storyboard */; };
 		C93E24031D3D5F97006A2848 /* BLLocationSearchTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */; };
 		C94B98B11D5A1F2E008D267C /* BLAnnotation.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */; };
 		C94B98B41D5A2176008D267C /* BLAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C94B98B31D5A2176008D267C /* BLAnnotation.m */; };
 		C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C99F6DF81D5651DD00767F3B /* Main.storyboard */; };
+		C9E1E3E31D6390A70078FA93 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1E3E21D6390A70078FA93 /* Reachability.m */; };
 		C9E7AD291D577CE800500963 /* BLAdventureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E7AD281D577CE800500963 /* BLAdventureCell.m */; };
 		C9FB9CDE1D5CC82F00322067 /* BLPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FB9CDD1D5CC82F00322067 /* BLPointAnnotation.m */; };
 		DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */; };
@@ -76,7 +77,6 @@
 		C91043E21D32A9760094B15B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C91043EB1D32A9760094B15B /* Hele.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Hele.xcdatamodel; sourceTree = "<group>"; };
 		C91043ED1D32A9760094B15B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C91043F01D32A9760094B15B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C91043F21D32A9760094B15B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C91043F71D32A9760094B15B /* HeleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C91043FB1D32A9760094B15B /* HeleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeleTests.m; sourceTree = "<group>"; };
@@ -104,6 +104,7 @@
 		C917E9B51D5A742D00CA1337 /* BLCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCalloutView.h; sourceTree = "<group>"; };
 		C917E9B61D5A742D00CA1337 /* BLCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCalloutView.m; sourceTree = "<group>"; };
 		C917E9B81D5A744900CA1337 /* BLCalloutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLCalloutView.xib; sourceTree = "<group>"; };
+		C92B60041D60EC36005EC21B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C93E24011D3D5F97006A2848 /* BLLocationSearchTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLocationSearchTable.h; sourceTree = "<group>"; };
 		C93E24021D3D5F97006A2848 /* BLLocationSearchTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLocationSearchTable.m; sourceTree = "<group>"; };
 		C94B98B01D5A1F2E008D267C /* BLAnnotation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLAnnotation.xib; sourceTree = "<group>"; };
@@ -111,6 +112,8 @@
 		C94B98B31D5A2176008D267C /* BLAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAnnotation.m; sourceTree = "<group>"; };
 		C99F6DF81D5651DD00767F3B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C9C1BF031D5A366C008FB75B /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../mapbox-ios-sdk-3/dynamic/Mapbox.framework"; sourceTree = "<group>"; };
+		C9E1E3E11D6390A70078FA93 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		C9E1E3E21D6390A70078FA93 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		C9E7AD271D577CE800500963 /* BLAdventureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAdventureCell.h; sourceTree = "<group>"; };
 		C9E7AD281D577CE800500963 /* BLAdventureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureCell.m; sourceTree = "<group>"; };
 		C9FB9CDC1D5CC82F00322067 /* BLPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPointAnnotation.h; sourceTree = "<group>"; };
@@ -200,8 +203,8 @@
 				C917E9B41D5A6FDD00CA1337 /* BLCalloutView */,
 				C91043ED1D32A9760094B15B /* Assets.xcassets */,
 				C99F6DF81D5651DD00767F3B /* Main.storyboard */,
+				C92B60041D60EC36005EC21B /* Launch Screen.storyboard */,
 				C91043F21D32A9760094B15B /* Info.plist */,
-				C91043EF1D32A9760094B15B /* LaunchScreen.storyboard */,
 				C910441D1D32AACF0094B15B /* Model */,
 				C91043DE1D32A9760094B15B /* Supporting Files */,
 			);
@@ -211,6 +214,8 @@
 		C91043DE1D32A9760094B15B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C9E1E3E11D6390A70078FA93 /* Reachability.h */,
+				C9E1E3E21D6390A70078FA93 /* Reachability.m */,
 				C91043DF1D32A9760094B15B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -408,7 +413,7 @@
 				C94B98B11D5A1F2E008D267C /* BLAnnotation.xib in Resources */,
 				C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */,
 				C917E9B91D5A744900CA1337 /* BLCalloutView.xib in Resources */,
-				C91043F11D32A9760094B15B /* LaunchScreen.storyboard in Resources */,
+				C92B60051D60EC36005EC21B /* Launch Screen.storyboard in Resources */,
 				C91043EE1D32A9760094B15B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -511,6 +516,7 @@
 				C91044261D32ABE90094B15B /* BLPinMO+CoreDataProperties.m in Sources */,
 				C910441C1D32AAAF0094B15B /* BLPhotoCell.m in Sources */,
 				C91044281D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m in Sources */,
+				C9E1E3E31D6390A70078FA93 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,17 +551,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		C91043EF1D32A9760094B15B /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C91043F01D32A9760094B15B /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		C91044091D32A9760094B15B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -576,6 +571,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -621,6 +617,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -646,15 +643,18 @@
 			baseConfigurationReference = 107A3ED01F242A12D21A9FF1 /* Pods-Hele.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Hele/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -664,15 +664,18 @@
 			baseConfigurationReference = AD053ADCA484AABE1AE4269A /* Pods-Hele.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Hele/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
