@@ -20,7 +20,6 @@
 
 @import Mapbox;
 
-
 enum flickrPhotoSize {
     flickrPhotoSizeSquare,
     flickrPhotoSizeLargeSquare,
@@ -40,7 +39,7 @@ static NSString *const apiKey = @"5cb909f40a9a88ecc2c97b0dfe7e09e5";
 NSString *kCellID = @"photoCell";       // UICollecionViewCell storyboard id
 BOOL firstTimeRequest = YES;
 
-@interface BLExploreViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate, HandleMapSearch>
+@interface BLExploreViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, MGLMapViewDelegate, CLLocationManagerDelegate, HandleMapSearch, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSURLSession *session;
 @property (nonatomic, strong) NSURLSessionDownloadTask *task;
@@ -63,8 +62,14 @@ BOOL firstTimeRequest = YES;
 
 @property (nonatomic, strong) UISearchController *resultSearchController;
 @property (nonatomic, strong) MKPlacemark *selectedPin;
+@property (nonatomic, strong) CLLocation *currentCity;
 
 @property (nonatomic, strong) UIAlertAction *okAction;
+
+// Check for internet connection.
+@property (nonatomic) Reachability *internetReachability;
+
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -80,6 +85,45 @@ BOOL firstTimeRequest = YES;
     _cache = [[NSCache alloc] init];
     _numberOfPhotos = INCR;
     
+    // Initialize currentCity with New York coordintates.
+    _currentCity = [[CLLocation alloc] initWithLatitude:40.7142700 longitude:-74.0059700];
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:_currentCity completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (!error && [placemarks count] > 0) {
+            CLPlacemark *placemark = [placemarks firstObject];
+            self.selectedPin = [[MKPlacemark alloc] initWithPlacemark:placemark];
+        }
+    }];
+    
+    
+    // Initial position.
+    switch (CLLocationManager.authorizationStatus) {
+        case kCLAuthorizationStatusDenied: {
+            // Removing all photos of previous location
+            [self.photoIDs removeAllObjects];
+            [self.photoURLs removeAllObjects];
+            [self.photoLocations removeAllObjects];
+            [self.photoLocationsForAdv removeAllObjects];
+            [self.selectedItems removeAllObjects];
+            [self.photoURLsForAdv removeAllObjects];
+            [self.pinPoints removeAllObjects];
+            [self.cache removeAllObjects];
+            self.numberOfPhotos = INCR;
+            
+            [self photosAroundLocation:self.currentCity number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+                [_collectionView reloadData];
+            }];
+            
+            [_mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:NO];
+        }
+        default:
+            ;
+    }
+    
+    // Initialize locationManager.
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    
     // Configure navigation bar style.
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -94,6 +138,75 @@ BOOL firstTimeRequest = YES;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonClicked)];
     self.navigationItem.title = @"Discover";
     
+    // Checking for internet connection
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    [self.internetReachability startNotifier];
+    
+    [self handleConnectionCheck:self.internetReachability];
+}
+
+- (void)reachabilityChanged:(NSNotification *)notification {
+    
+    Reachability *reachability = [notification object];
+    [self handleConnectionCheck:reachability];
+}
+
+- (void)handleConnectionCheck:(Reachability *)reachability {
+    
+    switch (reachability.currentReachabilityStatus) {
+        case NotReachable:
+            NSLog(@">>> No internet connection found.");
+            self.collectionView.allowsSelection = NO;
+            [self alertLostConnection];
+            break;
+        case ReachableViaWiFi:
+        case ReachableViaWWAN:
+            NSLog(@">>> Internet connection found.");
+            self.collectionView.allowsSelection = YES;
+            [self.mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:YES];
+            
+            // Removing all photos of previous location
+            [self.photoIDs removeAllObjects];
+            [self.photoURLs removeAllObjects];
+            [self.photoLocations removeAllObjects];
+            [self.photoLocationsForAdv removeAllObjects];
+            [self.selectedItems removeAllObjects];
+            [self.photoURLsForAdv removeAllObjects];
+            [self.pinPoints removeAllObjects];
+            [self.cache removeAllObjects];
+            self.numberOfPhotos = INCR;
+            
+            [self photosAroundLocation:self.currentCity number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+                [self.collectionView reloadData];
+            }];
+            
+            // Move collectionView to beginning.
+            // [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
+           
+            break;
+    }
+}
+
+- (void)alertLostConnection {
+    // Present UIAlertController to alert user.
+    // Create UIAlertController.
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Load Data" message:@"No internet connection available." preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Change background UIAlertController.
+    UIView *subview = alert.view.subviews.firstObject;
+    UIView *alertContentView = subview.subviews.firstObject;
+    alertContentView.backgroundColor = [UIColor whiteColor];
+    alertContentView.layer.cornerRadius = 10;
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    // Change tintColor UIAlertController.
+    alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
 }
 
 #pragma mark - Networking Methods
@@ -123,7 +236,6 @@ BOOL firstTimeRequest = YES;
         
         if (firstTimeRequest) {
             firstTimeRequest = NO;
-            NSLog(@"Ya se hizo");
             for (NSDictionary *photo in self.photoIDs) {
             
                 dispatch_group_enter(group);
@@ -374,11 +486,7 @@ BOOL firstTimeRequest = YES;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (self.photoURLs.count == 0) {
-        return 15;
-    } else {
-        return self.photoURLs.count;
-    }
+    return self.photoURLs.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -398,7 +506,7 @@ BOOL firstTimeRequest = YES;
     }
     
     if (self.photoURLs.count != 0) {
-        
+        NSLog(@"--------> %lu", self.photoIDs.count);
         /*
         if ( [self.cache objectForKey:@(indexPath.item)] != nil ) {
             cell.photo.image = [self.cache objectForKey:@(indexPath.item)];
@@ -589,35 +697,46 @@ BOOL firstTimeRequest = YES;
 
 - (void)mapView:(MGLMapView *)mapView didUpdateUserLocation:(MGLUserLocation *)userLocation {
     
-    Reachability *internetReachability = [Reachability reachabilityForInternetConnection];
-    NetworkStatus networkStatus = [internetReachability currentReachabilityStatus];
+    if (firstTimeRequest) {
+        [self photosAroundLocation:userLocation.location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+            [_collectionView reloadData];
+        }];
+        
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder reverseGeocodeLocation:userLocation.location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+            if (!error && [placemarks count] > 0) {
+                CLPlacemark *placemark = [placemarks firstObject];
+                self.selectedPin = [[MKPlacemark alloc] initWithPlacemark:placemark];
+            }
+        }];
+        
+        
+        self.currentCity = userLocation.location;
+        [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:12 animated:NO];
+    }
     
-    if (networkStatus != NotReachable) {
-        if (firstTimeRequest) {
-            [self photosAroundLocation:userLocation.location number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
-                [_collectionView reloadData];
-            }];
-    
-            [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:8 animated:NO];
-        }
-    } else {
-        // Present UIAlertController to alert user.
-        // Create UIAlertController.
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Load Data" message:@"No internet connection available." preferredStyle:UIAlertControllerStyleAlert];
+}
+
+#pragma mark - CLLocationManager Delegate Methods
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    if (status == kCLAuthorizationStatusDenied) {
+        // Removing all photos of previous location
+        [self.photoIDs removeAllObjects];
+        [self.photoURLs removeAllObjects];
+        [self.photoLocations removeAllObjects];
+        [self.photoLocationsForAdv removeAllObjects];
+        [self.selectedItems removeAllObjects];
+        [self.photoURLsForAdv removeAllObjects];
+        [self.pinPoints removeAllObjects];
+        [self.cache removeAllObjects];
+        self.numberOfPhotos = INCR;
         
-        // Change background UIAlertController.
-        UIView *subview = alert.view.subviews.firstObject;
-        UIView *alertContentView = subview.subviews.firstObject;
-        alertContentView.backgroundColor = [UIColor whiteColor];
-        alertContentView.layer.cornerRadius = 10;
+        [self photosAroundLocation:self.currentCity number:_numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+            [_collectionView reloadData];
+        }];
         
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-        
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        
-        // Change tintColor UIAlertController.
-        alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+        [_mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:NO];
     }
 }
 
@@ -645,20 +764,19 @@ BOOL firstTimeRequest = YES;
     [self.cache removeAllObjects];
     self.numberOfPhotos = INCR;
     
-    CLLocation *placemarkLocation = [[CLLocation alloc] initWithLatitude:placemark.coordinate.latitude longitude:placemark.coordinate.longitude];
-    [self photosAroundLocation:placemarkLocation number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+    // Set current city.
+    self.currentCity = placemark.location;
+    
+    [self photosAroundLocation:placemark.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+        NSLog(@"--------> %lu", self.photoURLs.count);
         [self.collectionView reloadData];
     }];
     
     // Move UICollectionView to the first cell.
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
-    
-    annotation.title = placemark.name;
-    if (placemark.locality && placemark.administrativeArea) {
-        annotation.subtitle = [NSString stringWithFormat:@"%@ %@", placemark.locality, placemark.administrativeArea];
+    if (self.photoURLs.count > 0) {
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
     }
     
-    [self.mapView addAnnotation: annotation];
     [self.mapView setCenterCoordinate:placemark.coordinate zoomLevel:12 animated:YES];
 }
 
@@ -764,7 +882,6 @@ BOOL firstTimeRequest = YES;
         [self presentViewController:navController animated:YES completion:^{
             // Clear existing pins.
             [self.mapView removeAnnotations: self.mapView.annotations];
-            [self.mapView setCenterCoordinate:self.mapView.userLocation.location.coordinate zoomLevel:12 animated:YES];
             
             // Removing all photos of previous location
             [self.photoIDs removeAllObjects];
@@ -777,9 +894,25 @@ BOOL firstTimeRequest = YES;
             [self.cache removeAllObjects];
             self.numberOfPhotos = INCR;
             
-            [self photosAroundLocation:self.mapView.userLocation.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
-                [self.collectionView reloadData];
-            }];
+            CLLocationCoordinate2D userLocation = CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude, self.mapView.userLocation.coordinate.longitude);
+            
+            if (userLocation.latitude == 0.0 && userLocation.longitude == 0.0) {
+                [self.mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:YES];
+                
+                // move collection view to beginning.
+                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
+                
+                [self photosAroundLocation:self.currentCity number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+                    [self.collectionView reloadData];
+                }];
+                
+            } else {
+                [self.mapView setCenterCoordinate:self.mapView.userLocation.location.coordinate zoomLevel:12 animated:YES];
+                [self photosAroundLocation:self.mapView.userLocation.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
+                    [self.collectionView reloadData];
+                }];
+            }
+            
         }];
         
         // Remove observer of textField.

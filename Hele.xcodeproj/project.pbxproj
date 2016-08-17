@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5207B3C4F7BDC679CE15526A /* Pods_Hele.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC64BDE260B4DEE5A028BE48 /* Pods_Hele.framework */; };
 		C91043E01D32A9760094B15B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C91043DF1D32A9760094B15B /* main.m */; };
 		C91043E31D32A9760094B15B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C91043E21D32A9760094B15B /* AppDelegate.m */; };
 		C91043EC1D32A9760094B15B /* Hele.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C91043EA1D32A9760094B15B /* Hele.xcdatamodeld */; };
@@ -21,8 +22,6 @@
 		C91044281D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044231D32ABE90094B15B /* BLAdventureMO+CoreDataProperties.m */; };
 		C91044291D32ABE90094B15B /* BLAdventureMO.m in Sources */ = {isa = PBXBuildFile; fileRef = C91044251D32ABE90094B15B /* BLAdventureMO.m */; };
 		C910442E1D32B0100094B15B /* BLPathViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C910442D1D32B0100094B15B /* BLPathViewController.m */; };
-		C917E9AF1D5A3BEC00CA1337 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */; };
-		C917E9B01D5A3BEC00CA1337 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C917E9B71D5A742D00CA1337 /* BLCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = C917E9B61D5A742D00CA1337 /* BLCalloutView.m */; };
 		C917E9B91D5A744900CA1337 /* BLCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C917E9B81D5A744900CA1337 /* BLCalloutView.xib */; };
 		C92B60051D60EC36005EC21B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C92B60041D60EC36005EC21B /* Launch Screen.storyboard */; };
@@ -32,8 +31,9 @@
 		C99F6DF91D5651DD00767F3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C99F6DF81D5651DD00767F3B /* Main.storyboard */; };
 		C9E1E3E31D6390A70078FA93 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E1E3E21D6390A70078FA93 /* Reachability.m */; };
 		C9E7AD291D577CE800500963 /* BLAdventureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E7AD281D577CE800500963 /* BLAdventureCell.m */; };
+		C9EFCB2C1D63D47D008CFA74 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9EFCB2B1D63D47D008CFA74 /* Mapbox.framework */; };
+		C9EFCB2D1D63D47D008CFA74 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9EFCB2B1D63D47D008CFA74 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9FB9CDE1D5CC82F00322067 /* BLPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C9FB9CDD1D5CC82F00322067 /* BLPointAnnotation.m */; };
-		DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,13 +54,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C917E9B11D5A3BEC00CA1337 /* Embed Frameworks */ = {
+		C9898A341D63CF7F002E6A16 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C917E9B01D5A3BEC00CA1337 /* Mapbox.framework in Embed Frameworks */,
+				C9EFCB2D1D63D47D008CFA74 /* Mapbox.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,8 +68,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hele.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		107A3ED01F242A12D21A9FF1 /* Pods-Hele.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hele.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hele/Pods-Hele.debug.xcconfig"; sourceTree = "<group>"; };
+		AC64BDE260B4DEE5A028BE48 /* Pods_Hele.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hele.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD053ADCA484AABE1AE4269A /* Pods-Hele.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hele.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hele/Pods-Hele.release.xcconfig"; sourceTree = "<group>"; };
 		C91043DB1D32A9760094B15B /* Hele.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hele.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C91043DF1D32A9760094B15B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -100,7 +100,6 @@
 		C91044251D32ABE90094B15B /* BLAdventureMO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureMO.m; sourceTree = "<group>"; };
 		C910442C1D32B0100094B15B /* BLPathViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPathViewController.h; sourceTree = "<group>"; };
 		C910442D1D32B0100094B15B /* BLPathViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPathViewController.m; sourceTree = "<group>"; };
-		C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		C917E9B51D5A742D00CA1337 /* BLCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLCalloutView.h; sourceTree = "<group>"; };
 		C917E9B61D5A742D00CA1337 /* BLCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLCalloutView.m; sourceTree = "<group>"; };
 		C917E9B81D5A744900CA1337 /* BLCalloutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BLCalloutView.xib; sourceTree = "<group>"; };
@@ -111,11 +110,11 @@
 		C94B98B21D5A2176008D267C /* BLAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAnnotation.h; sourceTree = "<group>"; };
 		C94B98B31D5A2176008D267C /* BLAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAnnotation.m; sourceTree = "<group>"; };
 		C99F6DF81D5651DD00767F3B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		C9C1BF031D5A366C008FB75B /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../mapbox-ios-sdk-3/dynamic/Mapbox.framework"; sourceTree = "<group>"; };
 		C9E1E3E11D6390A70078FA93 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		C9E1E3E21D6390A70078FA93 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		C9E7AD271D577CE800500963 /* BLAdventureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAdventureCell.h; sourceTree = "<group>"; };
 		C9E7AD281D577CE800500963 /* BLAdventureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAdventureCell.m; sourceTree = "<group>"; };
+		C9EFCB2B1D63D47D008CFA74 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		C9FB9CDC1D5CC82F00322067 /* BLPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPointAnnotation.h; sourceTree = "<group>"; };
 		C9FB9CDD1D5CC82F00322067 /* BLPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPointAnnotation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -125,8 +124,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAADB5FA9E9C25D049D6D482 /* Pods_Hele.framework in Frameworks */,
-				C917E9AF1D5A3BEC00CA1337 /* Mapbox.framework in Frameworks */,
+				5207B3C4F7BDC679CE15526A /* Pods_Hele.framework in Frameworks */,
+				C9EFCB2C1D63D47D008CFA74 /* Mapbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,9 +158,8 @@
 		9A3425F4808B08A2C2AEB538 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C917E9AE1D5A3BEC00CA1337 /* Mapbox.framework */,
-				C9C1BF031D5A366C008FB75B /* Mapbox.framework */,
-				008447C3B8480587B1BEC8C0 /* Pods_Hele.framework */,
+				C9EFCB2B1D63D47D008CFA74 /* Mapbox.framework */,
+				AC64BDE260B4DEE5A028BE48 /* Pods_Hele.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -312,8 +310,8 @@
 				C91043D91D32A9760094B15B /* Resources */,
 				36462FCEB2A8183593CF7EFF /* [CP] Embed Pods Frameworks */,
 				412427162F15A27002353E06 /* [CP] Copy Pods Resources */,
-				C917E9B11D5A3BEC00CA1337 /* Embed Frameworks */,
-				C917E9B21D5A3BF100CA1337 /* ShellScript */,
+				C9898A341D63CF7F002E6A16 /* Embed Frameworks */,
+				C9EFCB2E1D63D49B008CFA74 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -480,7 +478,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		C917E9B21D5A3BF100CA1337 /* ShellScript */ = {
+		C9EFCB2E1D63D49B008CFA74 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

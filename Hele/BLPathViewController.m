@@ -12,6 +12,7 @@
 #import "BLAnnotation.h"
 #import "BLCalloutView.h"
 #import "BLPointAnnotation.h"
+#import "Reachability.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <ChameleonFramework/Chameleon.h>
 
@@ -22,6 +23,10 @@
 
 @property (weak, nonatomic) IBOutlet MGLMapView *mapView;
 @property (strong, nonatomic) MBDirections *directions;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+
+// Check for internet connection.
+@property (nonatomic) Reachability *internetReachability;
 
 @end
 
@@ -39,6 +44,113 @@
     
     _directions = [MBDirections sharedDirections];
     
+    // Initialize locationManager.
+    _locationManager = [[CLLocationManager alloc] init];
+    
+    // Checking for internet connection
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    [self.internetReachability startNotifier];
+    
+    [self handleConnectionCheck:self.internetReachability];
+}
+
+- (void)reachabilityChanged:(NSNotification *)notification {
+    
+    Reachability *reachability = [notification object];
+    [self handleConnectionCheck:reachability];
+}
+
+- (void)handleConnectionCheck:(Reachability *)reachability {
+    
+    switch (reachability.currentReachabilityStatus) {
+        case NotReachable:
+            NSLog(@">>> No internet connection found.");
+            [self alertLostConnection];
+            break;
+        case ReachableViaWiFi:
+        case ReachableViaWWAN:
+            NSLog(@">>> Internet connection found.");
+            [self drawIfLocationAvailable];
+            break;
+    }
+}
+
+- (void)alertLostConnection {
+    // Present UIAlertController to alert user.
+    // Create UIAlertController.
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Load Data" message:@"No internet connection available." preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Change background UIAlertController.
+    UIView *subview = alert.view.subviews.firstObject;
+    UIView *alertContentView = subview.subviews.firstObject;
+    alertContentView.backgroundColor = [UIColor whiteColor];
+    alertContentView.layer.cornerRadius = 10;
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    // Change tintColor UIAlertController.
+    alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+}
+
+- (void)drawIfLocationAvailable {
+    
+    switch (CLLocationManager.authorizationStatus) {
+        case kCLAuthorizationStatusAuthorizedAlways:
+            break;
+        case kCLAuthorizationStatusNotDetermined:
+            [self.locationManager requestAlwaysAuthorization];
+            break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+        case kCLAuthorizationStatusRestricted:
+        case kCLAuthorizationStatusDenied: {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Background Location Access Disabled" message:@"We need your location to create a path" preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Change background UIAlertController.
+            UIView *subview = alertController.view.subviews.firstObject;
+            UIView *alertContentView = subview.subviews.firstObject;
+            alertContentView.backgroundColor = [UIColor whiteColor];
+            alertContentView.layer.cornerRadius = 10;
+            
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                
+                // Draw path and add pins.
+                CLLocation *firstLocation = [[CLLocation alloc] initWithLatitude:self.adventure.pins.firstObject.latitude.floatValue longitude:self.adventure.pins.firstObject.longitude.floatValue];
+                [self mapRequestforCurrentLocation:firstLocation];
+                
+                NSUInteger order = 1;
+                for (BLPinMO *pin in _adventure.pins) {
+                    [self locatePin:pin withOrderNumber:order++];
+                }
+            }];
+            [alertController addAction:cancelAction];
+            
+            UIAlertAction *openAction = [UIAlertAction actionWithTitle:@"Open Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+                NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                [[UIApplication sharedApplication] openURL:url];
+                
+                // Draw path and add pins.
+                CLLocation *firstLocation = [[CLLocation alloc] initWithLatitude:self.adventure.pins.firstObject.latitude.floatValue longitude:self.adventure.pins.firstObject.longitude.floatValue];
+                [self mapRequestforCurrentLocation:firstLocation];
+                
+                NSUInteger order = 1;
+                for (BLPinMO *pin in _adventure.pins) {
+                    [self locatePin:pin withOrderNumber:order++];
+                }
+            }];
+            [alertController addAction:openAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+            
+            // Change tintColor UIAlertController.
+            alertController.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+            break;
+        }
+    }
 }
 
 
@@ -170,7 +282,7 @@
     // If there’s no reusable annotation view available, initialize a new one.
     if (!annotationView) {
         annotationView = [[BLAnnotation alloc] initWithReuseIdentifier:reuseIdentifier];
-        annotationView.number.text = [NSString stringWithFormat:@"%lu", annotation.numberOrder];
+        annotationView.number.text = [NSString stringWithFormat:@"%lu", (unsigned long)annotation.numberOrder];
     }
     
     return annotationView;
