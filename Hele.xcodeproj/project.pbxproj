@@ -194,9 +194,9 @@
 				C99AE9801D41596C000F573F /* Explore Screen */,
 				C95FA1851D6DFDE3003C2DF0 /* Adventures Table */,
 				C9F6B14E1D4FB07200357617 /* Path Screen */,
-				C91043ED1D32A9760094B15B /* Assets.xcassets */,
 				C99F6DF81D5651DD00767F3B /* Main.storyboard */,
 				C92B60041D60EC36005EC21B /* Launch Screen.storyboard */,
+				C91043ED1D32A9760094B15B /* Assets.xcassets */,
 				C91043F21D32A9760094B15B /* Info.plist */,
 				C910441D1D32AACF0094B15B /* Model */,
 				C91043DE1D32A9760094B15B /* Supporting Files */,
@@ -372,12 +372,13 @@
 		C91043D31D32A9750094B15B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Naufal Aros";
 				TargetAttributes = {
 					C91043DA1D32A9760094B15B = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = UX6C44FPTA;
+						LastSwiftMigration = 0800;
 					};
 					C91043F61D32A9760094B15B = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -573,8 +574,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -619,8 +622,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -648,6 +653,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 107A3ED01F242A12D21A9FF1 /* Pods-Hele.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -661,6 +667,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -669,6 +676,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AD053ADCA484AABE1AE4269A /* Pods-Hele.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -682,6 +690,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
