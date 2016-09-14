@@ -39,14 +39,34 @@
     return str = str ? str : @"";
 }
 
+// https://www.thorntech.com/2016/01/how-to-search-for-location-using-apples-mapkit/
 - (NSString *)parseAddress:(MKPlacemark *)selectedItem {
     // put a space between "4" and "Melrose Place"
-    char firstSpace = *((selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : "");
+    NSString *firstSpace;
+    if (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) {
+        firstSpace = @" ";
+    } else {
+        firstSpace = @"";
+    }
+    
     // put a comma between street and city/state
-    char comma = *((selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) && (selectedItem.subAdministrativeArea != nil || selectedItem.administrativeArea != nil) ? ", " : "");
+    NSString *comma;
+    if ((selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) && (selectedItem.subAdministrativeArea != nil || selectedItem.administrativeArea != nil)) {
+        comma = @", ";
+    } else {
+        comma = @"";
+    }
+    
     // put a space between "Washington" and "DC"
-    char secondSpace = *((selectedItem.subAdministrativeArea != nil && selectedItem.administrativeArea != nil) ? " " : "");
-    NSString *addressLine = [NSString stringWithFormat:@"%@%c%@%c %@%c%@", [self stringOrEmpty:selectedItem.subThoroughfare], firstSpace, [self stringOrEmpty:selectedItem.thoroughfare], comma, [self stringOrEmpty:selectedItem.locality], secondSpace, [self stringOrEmpty:selectedItem.administrativeArea]];
+    NSString *secondSpace;
+    if (selectedItem.subAdministrativeArea != nil && selectedItem.administrativeArea != nil) {
+        secondSpace = @" ";
+    } else {
+        secondSpace = @"";
+    }
+    
+    NSString *addressLine = [NSString stringWithFormat:@"%@%@%@%@%@%@%@", [self stringOrEmpty:selectedItem.subThoroughfare], firstSpace, [self stringOrEmpty:selectedItem.thoroughfare], comma, [self stringOrEmpty:selectedItem.locality], secondSpace, [self stringOrEmpty:selectedItem.administrativeArea]];
+    
     return addressLine;
 }
 
@@ -145,9 +165,10 @@
             return;
         }
         
-        NSPredicate *noBusiness = [NSPredicate predicateWithFormat:@"business.uID == 0"];
+        //NSPredicate *noBusiness = [NSPredicate predicateWithFormat:@"business.uID == 0"];
         NSArray *locations = [NSArray arrayWithArray: response.mapItems];
-        self.matchingItems = [locations filteredArrayUsingPredicate: noBusiness];
+        //self.matchingItems = [locations filteredArrayUsingPredicate: noBusiness];
+        self.matchingItems = [NSArray arrayWithArray:locations];
         [self.tableView reloadData];
     }];
 }

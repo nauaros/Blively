@@ -33,12 +33,12 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    // TODO: Handle the error appropriately. Don't use abort()
     
     // Configure navigation bar style.
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.85]};
+    self.navigationItem.title = @"Adventures";
     
     // Configure tab bat style.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
@@ -46,7 +46,29 @@
     NSError *error;
     if (![[self fetchedResultsController] performFetch:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        [self showCoreDataAlert];
+    }
+    
+    if (self.fetchedResultsController.fetchedObjects.count > 0) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(setTableViewEditable)];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (self.fetchedResultsController.fetchedObjects.count > 0) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(setTableViewEditable)];
+    }
+}
+
+- (void)setTableViewEditable {
+    if (self.tableView.editing == NO) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(setTableViewEditable)];
+        [self.tableView setEditing:YES animated:YES];
+    } else {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(setTableViewEditable)];
+        [self.tableView setEditing:NO animated:YES];
     }
 }
 
@@ -119,21 +141,12 @@
         
         NSError *error;
         if (![context save:&error]) {
-            
-            // TODO: Handle the error appropriately. Don't use abort()
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            [self showCoreDataAlert];
         }
     }
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -195,6 +208,12 @@
             break;
             
         case NSFetchedResultsChangeDelete:
+            
+            if (self.fetchedResultsController.fetchedObjects.count == 0) {
+                self.navigationItem.leftBarButtonItem = nil;
+                [self.tableView setEditing: NO];
+            }
+            
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
             
@@ -283,7 +302,7 @@
                 
                 // TODO: Handle the error appropriately. Don't use abort()
                 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                abort();
+                [self showCoreDataAlert];
             }
             
             // Remove observer of textField.
@@ -318,7 +337,7 @@
             
             // TODO: Handle the error appropriately. Don't use abort()
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            [self showCoreDataAlert];
         }
     }];
     
@@ -332,6 +351,26 @@
     // Enforce a minimum length of >= 1 for secure text alerts and text not equal to previous name.
     self.renameAction.enabled = textField.text.length >= 1 && ![textField.text isEqualToString:self.adventureName];
 }
+
+#pragma mark - Helper Methods
+
+- (void)showCoreDataAlert {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Could Not Save Data" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    // Change background UIAlertController.
+    UIView *subview = alert.view.subviews.firstObject;
+    UIView *alertContentView = subview.subviews.firstObject;
+    alertContentView.backgroundColor = [UIColor whiteColor];
+    alertContentView.layer.cornerRadius = 10;
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:okAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    // Change tintColor UIAlertController.
+    alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+}
+
 
 #pragma mark - Navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

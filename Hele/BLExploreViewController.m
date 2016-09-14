@@ -114,7 +114,7 @@ BOOL firstTimeRequest = YES;
                 [_collectionView reloadData];
             }];
             
-            [_mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:NO];
+            [_mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:10 animated:NO];
         }
         default:
             ;
@@ -138,13 +138,16 @@ BOOL firstTimeRequest = YES;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonClicked)];
     self.navigationItem.title = @"Discover";
     
+    
+    
     // Checking for internet connection
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    
     self.internetReachability = [Reachability reachabilityForInternetConnection];
     [self.internetReachability startNotifier];
     
-    [self handleConnectionCheck:self.internetReachability];
+    // Listen for active state && check current connection.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noConnectionAlert:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [self noConnectionAlert:nil];
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification {
@@ -155,18 +158,19 @@ BOOL firstTimeRequest = YES;
 
 - (void)handleConnectionCheck:(Reachability *)reachability {
     
-    switch (reachability.currentReachabilityStatus) {
-        case NotReachable:
-            NSLog(@">>> No internet connection found.");
-            self.collectionView.allowsSelection = NO;
-            [self alertLostConnection];
-            break;
-        case ReachableViaWiFi:
-        case ReachableViaWWAN:
-            NSLog(@">>> Internet connection found.");
-            self.collectionView.allowsSelection = YES;
-            [self.mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:YES];
-            
+    if (reachability.currentReachabilityStatus == NotReachable) {
+        NSLog(@">>> No internet connection found.");
+        self.collectionView.allowsSelection = NO;
+        
+        // Show alert: No Connection.
+        [self noNetworkConnectionAlert];
+    } else if (reachability.currentReachabilityStatus == ReachableViaWiFi || reachability.currentReachabilityStatus == ReachableViaWWAN) {
+        
+        NSLog(@">>> Internet connection found.");
+        self.collectionView.allowsSelection = YES;
+        [self.mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:10 animated:YES];
+        
+        if (self.photoURLs.count == 0) {
             // Removing all photos of previous location
             [self.photoIDs removeAllObjects];
             [self.photoURLs removeAllObjects];
@@ -178,21 +182,16 @@ BOOL firstTimeRequest = YES;
             [self.cache removeAllObjects];
             self.numberOfPhotos = INCR;
             
-            [self photosAroundLocation:self.currentCity number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
-                [self.collectionView reloadData];
-            }];
-            
-            // Move collectionView to beginning.
-            // [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
-           
-            break;
+            [self loadMorePhotos];
+        }
+        
+        // Move collectionView to beginning.
+        // [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
     }
 }
 
-- (void)alertLostConnection {
-    // Present UIAlertController to alert user.
-    // Create UIAlertController.
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Cannot Load Data" message:@"No internet connection available." preferredStyle:UIAlertControllerStyleAlert];
+- (void)errorWithRequest {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"There was an error with the connection" preferredStyle:UIAlertControllerStyleAlert];
     
     // Change background UIAlertController.
     UIView *subview = alert.view.subviews.firstObject;
@@ -201,12 +200,61 @@ BOOL firstTimeRequest = YES;
     alertContentView.layer.cornerRadius = 10;
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-    
     [alert addAction:okAction];
+    
     [self presentViewController:alert animated:YES completion:nil];
     
     // Change tintColor UIAlertController.
     alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+}
+
+- (void)noNetworkConnectionAlert {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"No Network" message:@"Please check your network connection" preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Change background UIAlertController.
+    UIView *subview = alert.view.subviews.firstObject;
+    UIView *alertContentView = subview.subviews.firstObject;
+    alertContentView.backgroundColor = [UIColor whiteColor];
+    alertContentView.layer.cornerRadius = 10;
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:okAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    // Change tintColor UIAlertController.
+    alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+}
+
+- (void)noConnectionAlert:(NSNotification *)notification {
+    // Present UIAlertController to alert user.
+    // Create UIAlertController.
+    if (self.internetReachability.currentReachabilityStatus != ReachableViaWiFi && self.internetReachability.currentReachabilityStatus != ReachableViaWWAN) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Turn Off Airplane Mode or Use Wi-Fi to Access Data" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Change background UIAlertController.
+        UIView *subview = alert.view.subviews.firstObject;
+        UIView *alertContentView = subview.subviews.firstObject;
+        alertContentView.backgroundColor = [UIColor whiteColor];
+        alertContentView.layer.cornerRadius = 10;
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        
+        UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:@"Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[UIApplication sharedApplication] openURL:url];
+            });
+        }];
+        
+        [alert addAction:settingsAction];
+        [alert addAction:okAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        // Change tintColor UIAlertController.
+        alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+    }
 }
 
 #pragma mark - Networking Methods
@@ -237,12 +285,12 @@ BOOL firstTimeRequest = YES;
         if (firstTimeRequest) {
             firstTimeRequest = NO;
             for (NSDictionary *photo in self.photoIDs) {
-            
+                
                 dispatch_group_enter(group);
                 [self locationForPhoto:photo completionHandler:^{
                     dispatch_group_leave(group);
                 }];
-            
+                
                 dispatch_group_enter(group);
                 [self URLPhoto:photo forSize:size completionHandler:^{
                     dispatch_group_leave(group);
@@ -287,7 +335,7 @@ BOOL firstTimeRequest = YES;
 - (void)photosAroundLocation:(CLLocation *)location number:(int)number completionHandler:(void (^)(void))completionHandler
 {
     // Arguments for the API Request
-    NSString *tags = @"architecture,monuments";
+    NSString *tags = @"architecture,buildings,travel,tourism,monuments,art,outdoors";
     int accuracy = 11;
     int content_type = 1;
     NSString *media = @"photos";
@@ -331,11 +379,14 @@ BOOL firstTimeRequest = YES;
                     NSLog(@"ERROR There was an error with the Serialization.");
                 }
             } else {
-                NSLog(@"ERROR There was an HTTP error.");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self errorWithRequest];
+                });
             }
         } else {
-            NSLog(@"ERROR There was an error with the API request.");
-        }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self errorWithRequest];
+            });        }
     }];
     
     [_task resume];
@@ -417,10 +468,14 @@ BOOL firstTimeRequest = YES;
                     NSLog(@"ERROR There was an error in the JSONSerialization");
                 }
             } else {
-                NSLog(@"ERROR There was an error in the HTTP response.");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self errorWithRequest];
+                });
             }
         } else {
-            NSLog(@"ERROR There was an error with the request.");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self errorWithRequest];
+            });
         }
     }];
     
@@ -467,10 +522,14 @@ BOOL firstTimeRequest = YES;
                     NSLog(@"ERROR There was an error in the JSONSerialization");
                 }
             } else {
-                NSLog(@"ERROR There was an error in the HTTP response.");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self errorWithRequest];
+                });
             }
         } else {
-            NSLog(@"ERROR There was an error with the request.");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self errorWithRequest];
+            });
         }
     }];
     
@@ -506,35 +565,34 @@ BOOL firstTimeRequest = YES;
     }
     
     if (self.photoURLs.count != 0) {
-        NSLog(@"--------> %lu", self.photoIDs.count);
         /*
-        if ( [self.cache objectForKey:@(indexPath.item)] != nil ) {
-            cell.photo.image = [self.cache objectForKey:@(indexPath.item)];
-        } else {
-            _task = [self.session downloadTaskWithURL:self.photoURLs[indexPath.item] completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-                if (!error) {
-                    NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
-                    if (httpResp.statusCode == 200) {
-                        NSData *data = [NSData dataWithContentsOfURL:location];
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            BLPhotoCell *updateCell = (BLPhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
-                            if (updateCell) {
-                                UIImage *image = [UIImage imageWithData:data];
-                                updateCell.photo.image = image;
-                                [self.cache setObject:image forKey:@(indexPath.item)];
-                            }
-                        });
-                        
-                    } else {
-                        NSLog(@"ERROR There was an error in the HTTP response.");
-                    }
-                } else {
-                    NSLog(@"ERROR There was an error with the request.");
-                }
-            }];
-            
-            [_task resume];
-        }
+         if ( [self.cache objectForKey:@(indexPath.item)] != nil ) {
+         cell.photo.image = [self.cache objectForKey:@(indexPath.item)];
+         } else {
+         _task = [self.session downloadTaskWithURL:self.photoURLs[indexPath.item] completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+         if (!error) {
+         NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
+         if (httpResp.statusCode == 200) {
+         NSData *data = [NSData dataWithContentsOfURL:location];
+         dispatch_async(dispatch_get_main_queue(), ^{
+         BLPhotoCell *updateCell = (BLPhotoCell *)[collectionView cellForItemAtIndexPath:indexPath];
+         if (updateCell) {
+         UIImage *image = [UIImage imageWithData:data];
+         updateCell.photo.image = image;
+         [self.cache setObject:image forKey:@(indexPath.item)];
+         }
+         });
+         
+         } else {
+         NSLog(@"ERROR There was an error in the HTTP response.");
+         }
+         } else {
+         NSLog(@"ERROR There was an error with the request.");
+         }
+         }];
+         
+         [_task resume];
+         }
          */
         
         // Image fetch using SDWebImage.
@@ -583,24 +641,24 @@ BOOL firstTimeRequest = YES;
     }
     
     if (![self.photoLocationsForAdv containsObject:self.photoLocations[indexPath.item]] && ![self.photoURLsForAdv containsObject:self.photoURLs[indexPath.item]]) {
-     CLLocation *location = self.photoLocations[indexPath.item];
-     [self.photoLocationsForAdv addObject:location];
-     [self.photoURLsForAdv addObject:self.photoURLs[indexPath.item]];
-     
-     MGLPointAnnotation *pin = [[MGLPointAnnotation alloc] init];
-     pin.coordinate = location.coordinate;
-     pin.title = [NSString stringWithFormat:@"%f - %f", location.coordinate.latitude, location.coordinate.longitude];
-     
-     [self.pinPoints setObject:pin forKey:@(indexPath.item)];
-     [self.mapView addAnnotation:pin];
-
+        CLLocation *location = self.photoLocations[indexPath.item];
+        [self.photoLocationsForAdv addObject:location];
+        [self.photoURLsForAdv addObject:self.photoURLs[indexPath.item]];
+        
+        MGLPointAnnotation *pin = [[MGLPointAnnotation alloc] init];
+        pin.coordinate = location.coordinate;
+        pin.title = [NSString stringWithFormat:@"%f - %f", location.coordinate.latitude, location.coordinate.longitude];
+        
+        [self.pinPoints setObject:pin forKey:@(indexPath.item)];
+        [self.mapView addAnnotation:pin];
+        
     } else {
-     [self.photoLocationsForAdv removeObject:self.photoLocations[indexPath.item]];
-     [self.photoURLsForAdv removeObject:self.photoURLs[indexPath.item]];
-     
-     MGLPointAnnotation *pin = [self.pinPoints objectForKey:@(indexPath.item)];
-     [self.pinPoints removeObjectForKey:@(indexPath.item)];
-     [self.mapView removeAnnotation:pin];
+        [self.photoLocationsForAdv removeObject:self.photoLocations[indexPath.item]];
+        [self.photoURLsForAdv removeObject:self.photoURLs[indexPath.item]];
+        
+        MGLPointAnnotation *pin = [self.pinPoints objectForKey:@(indexPath.item)];
+        [self.pinPoints removeObjectForKey:@(indexPath.item)];
+        [self.mapView removeAnnotation:pin];
     }
     
     if (![self.selectedItems containsObject:indexPath]) {
@@ -683,6 +741,20 @@ BOOL firstTimeRequest = YES;
     NSError *error = nil;
     if ([[self managedObjectContext] save:&error] == NO) {
         NSAssert(NO, @"Error saving context: %@\n%@", [error localizedDescription], [error userInfo]);
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Could Not Save Data" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        // Change background UIAlertController.
+        UIView *subview = alert.view.subviews.firstObject;
+        UIView *alertContentView = subview.subviews.firstObject;
+        alertContentView.backgroundColor = [UIColor whiteColor];
+        alertContentView.layer.cornerRadius = 10;
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:okAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        // Change tintColor UIAlertController.
+        alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
     } else {
         NSLog(@"Context saved.");
     }
@@ -712,7 +784,7 @@ BOOL firstTimeRequest = YES;
         
         
         self.currentCity = userLocation.location;
-        [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:12 animated:NO];
+        [_mapView setCenterCoordinate:userLocation.location.coordinate zoomLevel:10 animated:NO];
     }
     
 }
@@ -736,7 +808,7 @@ BOOL firstTimeRequest = YES;
             [_collectionView reloadData];
         }];
         
-        [_mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:NO];
+        [_mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:10 animated:NO];
     }
 }
 
@@ -768,16 +840,31 @@ BOOL firstTimeRequest = YES;
     self.currentCity = placemark.location;
     
     [self photosAroundLocation:placemark.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
-        NSLog(@"--------> %lu", self.photoURLs.count);
         [self.collectionView reloadData];
+        
+        // Move UICollectionView to the first cell.
+        if (self.photoURLs.count > 0) {
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
+        } else {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Ups ☹️" message:@"There are no photos." preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Change background UIAlertController.
+            UIView *subview = alert.view.subviews.firstObject;
+            UIView *alertContentView = subview.subviews.firstObject;
+            alertContentView.backgroundColor = [UIColor whiteColor];
+            alertContentView.layer.cornerRadius = 10;
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:okAction];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            // Change tintColor UIAlertController.
+            alert.view.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
+        }
     }];
     
-    // Move UICollectionView to the first cell.
-    if (self.photoURLs.count > 0) {
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
-    }
-    
-    [self.mapView setCenterCoordinate:placemark.coordinate zoomLevel:12 animated:YES];
+    [self.mapView setCenterCoordinate:placemark.coordinate zoomLevel:10 animated:YES];
 }
 
 #pragma mark - UI Methods
@@ -897,7 +984,7 @@ BOOL firstTimeRequest = YES;
             CLLocationCoordinate2D userLocation = CLLocationCoordinate2DMake(self.mapView.userLocation.coordinate.latitude, self.mapView.userLocation.coordinate.longitude);
             
             if (userLocation.latitude == 0.0 && userLocation.longitude == 0.0) {
-                [self.mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:12 animated:YES];
+                [self.mapView setCenterCoordinate:self.currentCity.coordinate zoomLevel:10 animated:YES];
                 
                 // move collection view to beginning.
                 [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:NO];
@@ -907,7 +994,7 @@ BOOL firstTimeRequest = YES;
                 }];
                 
             } else {
-                [self.mapView setCenterCoordinate:self.mapView.userLocation.location.coordinate zoomLevel:12 animated:YES];
+                [self.mapView setCenterCoordinate:self.mapView.userLocation.location.coordinate zoomLevel:10 animated:YES];
                 [self photosAroundLocation:self.mapView.userLocation.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
                     [self.collectionView reloadData];
                 }];
@@ -926,7 +1013,7 @@ BOOL firstTimeRequest = YES;
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         // Remove observer of textField.
-         [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:alert.textFields.firstObject];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:alert.textFields.firstObject];
     }];
     
     [alert addAction:okAction];
@@ -948,7 +1035,7 @@ BOOL firstTimeRequest = YES;
     UITextField *textField = (UITextField *)[notification object];
     
     // Enforce a minimum length of >= 1 for secure text alerts and text not equal to previous name.
-    self.okAction.enabled = textField.text.length >= 1;;
+    self.okAction.enabled = textField.text.length >= 1;
 }
 
 @end

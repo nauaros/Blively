@@ -4,10 +4,10 @@ PODS:
   - ChameleonFramework/Default (2.1.0)
   - MapboxDirections.swift (0.6.0):
     - Polyline (~> 3.2)
-  - Polyline (3.2.2)
-  - SDWebImage (3.8.1):
-    - SDWebImage/Core (= 3.8.1)
-  - SDWebImage/Core (3.8.1)
+  - Polyline (3.3.0)
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
   - ChameleonFramework
@@ -27,8 +27,8 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   MapboxDirections.swift: 144cefb4386d419f916ce27928834c28bbaafb4f
-  Polyline: 4968bf16ceddd579e1e60820edc74a2271ec9c59
-  SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
+  Polyline: 9d5e2f34898a4c37a32e1053bdc9de4a761ec960
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
 PODFILE CHECKSUM: f729902f63ac662a9ed6a0e201a96e2341712432
 

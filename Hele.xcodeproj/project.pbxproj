@@ -192,13 +192,8 @@
 				C91043E11D32A9760094B15B /* AppDelegate.h */,
 				C91043E21D32A9760094B15B /* AppDelegate.m */,
 				C99AE9801D41596C000F573F /* Explore Screen */,
-				C91044171D32AA6A0094B15B /* BLAdventuresViewController.h */,
-				C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */,
-				C9E7AD271D577CE800500963 /* BLAdventureCell.h */,
-				C9E7AD281D577CE800500963 /* BLAdventureCell.m */,
+				C95FA1851D6DFDE3003C2DF0 /* Adventures Table */,
 				C9F6B14E1D4FB07200357617 /* Path Screen */,
-				C94B98B51D5A33F0008D267C /* BLAnnotation */,
-				C917E9B41D5A6FDD00CA1337 /* BLCalloutView */,
 				C91043ED1D32A9760094B15B /* Assets.xcassets */,
 				C99F6DF81D5651DD00767F3B /* Main.storyboard */,
 				C92B60041D60EC36005EC21B /* Launch Screen.storyboard */,
@@ -273,6 +268,17 @@
 			name = BLAnnotation;
 			sourceTree = "<group>";
 		};
+		C95FA1851D6DFDE3003C2DF0 /* Adventures Table */ = {
+			isa = PBXGroup;
+			children = (
+				C91044171D32AA6A0094B15B /* BLAdventuresViewController.h */,
+				C91044181D32AA6A0094B15B /* BLAdventuresViewController.m */,
+				C9E7AD271D577CE800500963 /* BLAdventureCell.h */,
+				C9E7AD281D577CE800500963 /* BLAdventureCell.m */,
+			);
+			name = "Adventures Table";
+			sourceTree = "<group>";
+		};
 		C99AE9801D41596C000F573F /* Explore Screen */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +299,8 @@
 				C910442D1D32B0100094B15B /* BLPathViewController.m */,
 				C9FB9CDC1D5CC82F00322067 /* BLPointAnnotation.h */,
 				C9FB9CDD1D5CC82F00322067 /* BLPointAnnotation.m */,
+				C94B98B51D5A33F0008D267C /* BLAnnotation */,
+				C917E9B41D5A6FDD00CA1337 /* BLCalloutView */,
 			);
 			name = "Path Screen";
 			sourceTree = "<group>";

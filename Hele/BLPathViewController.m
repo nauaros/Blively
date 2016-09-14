@@ -19,6 +19,9 @@
 @import Mapbox;
 @import MapboxDirections;
 
+// Do not update polyline.
+BOOL drawPath;
+
 @interface BLPathViewController () <MGLCalloutViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MGLMapView *mapView;
@@ -33,11 +36,13 @@
 @implementation BLPathViewController
 
 - (void)viewDidLoad {
+    drawPath = NO;
     
     // Configure navigation bar style.
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#1abc9c"];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor colorWithWhite:1.0 alpha:0.85]};
+    self.navigationItem.title = self.adventure.name; // Set Adventure name as title of navController.
     
     // Configure tab bat style.
     self.tabBarController.tabBar.tintColor = [UIColor colorWithHexString:@"#1abc9c"];
@@ -127,11 +132,14 @@
                     [self locatePin:pin withOrderNumber:order++];
                 }
             }];
-            [alertController addAction:cancelAction];
             
-            UIAlertAction *openAction = [UIAlertAction actionWithTitle:@"Open Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+            UIAlertAction *openAction = [UIAlertAction actionWithTitle:@"Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
                 NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                [[UIApplication sharedApplication] openURL:url];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:url];
+                });
+                
                 
                 // Draw path and add pins.
                 CLLocation *firstLocation = [[CLLocation alloc] initWithLatitude:self.adventure.pins.firstObject.latitude.floatValue longitude:self.adventure.pins.firstObject.longitude.floatValue];
@@ -143,6 +151,7 @@
                 }
             }];
             [alertController addAction:openAction];
+            [alertController addAction:cancelAction];
             
             [self presentViewController:alertController animated:YES completion:nil];
             
@@ -176,6 +185,7 @@
             [route getCoordinates:routeCoordinates];
             MGLPolyline *routeline = [MGLPolyline polylineWithCoordinates:routeCoordinates count:route.coordinateCount];
             
+            
             // Add the polyline to the map and fit the viewport to the polyline.
             [self.mapView addAnnotation:routeline];
             [self.mapView setVisibleCoordinates:routeCoordinates count:route.coordinateCount edgePadding:UIEdgeInsetsZero animated:YES];
@@ -206,15 +216,6 @@
     return [waypointsArray copy];
 }
 
-- (NSURL *)URLFromPin:(BLPinMO *)pin {
-    NSMutableString *urlString = [NSMutableString stringWithString:pin.imageURL];
-    
-    // Change imageURL to imageURL of size: square
-    [urlString deleteCharactersInRange:NSMakeRange(urlString.length-4, 4)];
-    [urlString appendString:@"_s.jpg"];
-    return [NSURL URLWithString:urlString];
-}
-
 - (void)locatePin:(BLPinMO *)pin withOrderNumber:(NSUInteger)number {
     // Instantiate a new CLGeocoder object.
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
@@ -225,7 +226,17 @@
         if (!error && [placemarks count] > 0) {
             CLPlacemark *placemark = [placemarks firstObject];
             
-            NSString *direction = [NSString stringWithFormat:@"%@, %@", placemark.subThoroughfare, placemark.thoroughfare];;
+            NSString *direction = @"";
+            if (placemark.subThoroughfare != nil && placemark.thoroughfare != nil) {
+                direction = [NSString stringWithFormat:@"%@, %@", placemark.subThoroughfare, placemark.thoroughfare];
+            } else {
+                if (placemark.subThoroughfare) {
+                    direction = [NSString stringWithFormat:@"%@", placemark.thoroughfare];
+                } else if (placemark.thoroughfare) {
+                    direction = [NSString stringWithFormat:@"%@", placemark.subThoroughfare];
+                }
+            }
+            
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 BLPointAnnotation *annotation = [[BLPointAnnotation alloc] init];
@@ -254,18 +265,25 @@
     
     // If not in current location, don't include current location.
     if (distance >= 3000) {
-        [self mapRequestforCurrentLocation:firstLocation];
-        
-        NSUInteger order = 1;
-        for (BLPinMO *pin in _adventure.pins) {
-            [self locatePin:pin withOrderNumber:order++];
+        if (!drawPath) {
+            [self mapRequestforCurrentLocation:firstLocation];
+            
+            NSUInteger order = 1;
+            for (BLPinMO *pin in _adventure.pins) {
+                [self locatePin:pin withOrderNumber:order++];
+            }
+            
+            drawPath = YES;
         }
     } else {
-        [self mapRequestforCurrentLocation:userLocation.location];
-        
-        NSUInteger order = 1;
-        for (BLPinMO *pin in _adventure.pins) {
-            [self locatePin:pin withOrderNumber:order++];
+        if (!drawPath) {
+            [self mapRequestforCurrentLocation:userLocation.location];
+            
+            NSUInteger order = 1;
+            for (BLPinMO *pin in _adventure.pins) {
+                [self locatePin:pin withOrderNumber:order++];
+            }
+            drawPath = YES;
         }
     }
 }
@@ -302,6 +320,11 @@
  
 - (UIView<MGLCalloutView> *)mapView:(MGLMapView *)mapView calloutViewForAnnotation:(BLPointAnnotation *)annotation
 {
+    // Do not show callout for user position.
+    if ([annotation.title isEqualToString:@"You Are Here"]) {
+        return nil;
+    }
+    
     // Instantiate and return our custom callout view
     BLCalloutView *calloutView = [[BLCalloutView alloc] init];
     calloutView.representedObject = annotation;
@@ -313,6 +336,14 @@
     }];
     
     return calloutView;
+}
+
+- (UIColor *)mapView:(MGLMapView *)mapView strokeColorForShapeAnnotation:(MGLShape *)annotation {
+    return [UIColor colorWithRed:0.07 green:0.51 blue:0.43 alpha:1.0];
+}
+
+- (CGFloat)mapView:(MGLMapView *)mapView lineWidthForPolylineAnnotation:(MGLPolyline *)annotation {
+    return 4.0;
 }
 
 - (BOOL)mapView:(MGLMapView *)mapView annotationCanShowCallout:(id<MGLAnnotation>)annotation {
