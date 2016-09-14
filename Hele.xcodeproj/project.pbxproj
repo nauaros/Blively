@@ -664,7 +664,7 @@
 				INFOPLIST_FILE = Hele/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Blively;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 2.3;
@@ -687,7 +687,7 @@
 				INFOPLIST_FILE = Hele/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Hele;
+				PRODUCT_BUNDLE_IDENTIFIER = com.naufalaros.Blively;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 2.3;
