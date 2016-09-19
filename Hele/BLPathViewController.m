@@ -240,6 +240,7 @@ BOOL drawPath;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 BLPointAnnotation *annotation = [[BLPointAnnotation alloc] init];
+                annotation.title = @"";
                 
                 // Set location.
                 annotation.coordinate = location.coordinate;
@@ -249,6 +250,9 @@ BOOL drawPath;
                 annotation.numberOrder = number;
                 // Set title.
                 annotation.title = direction;
+                if ([annotation.title isEqualToString:@"(null)"]) {
+                    annotation.title = @"";
+                }
                 
                 [self.mapView addAnnotation:annotation];
             });

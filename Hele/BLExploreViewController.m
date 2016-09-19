@@ -346,7 +346,7 @@ BOOL firstTimeRequest = YES;
     int per_page = number;
     NSString *format = @"json";
     
-    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&tags=%@&accuracy=%d&content_type=%d&media=%@&has_geo=%d&lat=%f&lon=%f&radius=%d&per_page=%d&format=%@&nojsoncallback=1", apiKey, tags, accuracy, content_type, media, has_geo,lat, lon, radius, per_page, format];
+    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&tags=%@&text=travel&license=1,2,3,4,5,6,7,9,10&accuracy=%d&content_type=%d&media=%@&has_geo=%d&lat=%f&lon=%f&radius=%d&per_page=%d&format=%@&nojsoncallback=1", apiKey, tags, accuracy, content_type, media, has_geo,lat, lon, radius, per_page, format];
     
     NSURL *url = [NSURL URLWithString:urlString];
     
