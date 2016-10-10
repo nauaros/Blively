@@ -335,7 +335,7 @@ BOOL firstTimeRequest = YES;
 - (void)photosAroundLocation:(CLLocation *)location number:(int)number completionHandler:(void (^)(void))completionHandler
 {
     // Arguments for the API Request
-    NSString *tags = @"architecture,buildings,travel,tourism,monuments,art,outdoors";
+    // NSString *tags = @"architecture,buildings,travel,tourism,monuments,art,outdoors"; &tags=%@
     int accuracy = 11;
     int content_type = 1;
     NSString *media = @"photos";
@@ -346,7 +346,7 @@ BOOL firstTimeRequest = YES;
     int per_page = number;
     NSString *format = @"json";
     
-    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&tags=%@&text=travel&license=1,2,3,4,5,6,7,9,10&accuracy=%d&content_type=%d&media=%@&has_geo=%d&lat=%f&lon=%f&radius=%d&per_page=%d&format=%@&nojsoncallback=1", apiKey, tags, accuracy, content_type, media, has_geo,lat, lon, radius, per_page, format];
+    NSString *urlString = [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=travel&license=1,2,3,4,5,6,7,9,10&accuracy=%d&content_type=%d&media=%@&has_geo=%d&lat=%f&lon=%f&radius=%d&per_page=%d&format=%@&nojsoncallback=1", apiKey, accuracy, content_type, media, has_geo,lat, lon, radius, per_page, format];
     
     NSURL *url = [NSURL URLWithString:urlString];
     
@@ -817,6 +817,9 @@ BOOL firstTimeRequest = YES;
 - (void)dropPinZoomIn:(MKPlacemark *)placemark {
     // Cancel current download task.
     [self.task cancel];
+    self.collectionView.allowsSelection = NO; // don't allow selection when changing place
+    self.collectionView.scrollEnabled = NO;
+    self.mapView.scrollEnabled = NO;
     
     // cache the pin
     self.selectedPin = placemark;
@@ -841,6 +844,9 @@ BOOL firstTimeRequest = YES;
     
     [self photosAroundLocation:placemark.location number:self.numberOfPhotos forSize:flickrPhotoSizeMedium completionHandler:^{
         [self.collectionView reloadData];
+        self.collectionView.allowsSelection = YES;
+        self.collectionView.scrollEnabled = YES;
+        self.mapView.scrollEnabled = YES;
         
         // Move UICollectionView to the first cell.
         if (self.photoURLs.count > 0) {
