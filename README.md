@@ -10,5 +10,5 @@ Explore any place viewing the suggested images.
 
 Whatever place you’re looking for, it is on Blively.
 
-![](images/ScreenshotA.png)
+![](images/screenshotA.png)
 ![](images/ScreenshotB.png)
