@@ -17,7 +17,8 @@ Whatever place you’re looking for, it is on Blively.
 ## Open Sourcing
 
 I learned a lot from other open source projects, so I hope that someone can get something out of this project.
-Please [let me know](https://twitter.com/naufalaros) know if this app was useful somehow :)
+Please [let me know](https://twitter.com/naufalaros) know if this app was useful somehow ☺️
+
 ## Contact
 
 You can find me on Twitter at [@NaufalAros](https://twitter.com/naufalaros).
