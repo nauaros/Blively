@@ -35,7 +35,7 @@ enum flickrPhotoSize {
 
 
 // pragma mark - Constants
-static NSString *const apiKey = @"5cb909f40a9a88ecc2c97b0dfe7e09e5";
+static NSString *const apiKey = @"";
 NSString *kCellID = @"photoCell";       // UICollecionViewCell storyboard id
 BOOL firstTimeRequest = YES;
 
